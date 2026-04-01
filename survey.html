@@ -1,628 +1,540 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard Feedback Survey – PDF Extraction Tool</title>
+  <title>SVD Dashboard Feedback Survey</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f0f4f8;
-      min-height: 100vh;
-      padding: 40px 16px;
-      color: #1a202c;
-    }
-
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
-    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f4f8;min-height:100vh;padding:40px 16px;color:#1a202c}
+    .container{max-width:700px;margin:0 auto}
 
     /* Header */
-    .header {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 36px 40px 28px;
-      margin-bottom: 20px;
-      border-top: 5px solid #3b82f6;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-    }
-    .header-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .header-logo svg {
-      width: 32px; height: 32px;
-    }
-    .header-logo span {
-      font-size: 15px;
-      font-weight: 600;
-      color: #3b82f6;
-    }
-    .header h1 {
-      font-size: 24px;
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 8px;
-    }
-    .header p {
-      font-size: 15px;
-      color: #6b7280;
-      line-height: 1.6;
-    }
+    .header{background:#fff;border-radius:16px;padding:36px 40px 28px;margin-bottom:20px;border-top:5px solid #22c55e;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+    .header-logo{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+    .logo-icon{width:36px;height:36px;background:#f0fdf4;border:2px solid #22c55e;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#16a34a}
+    .header h1{font-size:24px;font-weight:700;color:#111827;margin-bottom:8px}
+    .header p{font-size:15px;color:#6b7280;line-height:1.6}
+    .progress-bar-wrap{margin-top:20px}
+    .progress-label{font-size:12px;color:#9ca3af;margin-bottom:6px}
+    .progress-track{height:4px;background:#e5e7eb;border-radius:4px;overflow:hidden}
+    .progress-fill{height:4px;background:#22c55e;border-radius:4px;transition:width .4s ease;width:0%}
+
+    /* Section label */
+    .section-label{font-size:11px;font-weight:700;color:#22c55e;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
 
     /* Card */
-    .card {
-      background: #ffffff;
-      border-radius: 14px;
-      padding: 28px 32px;
-      margin-bottom: 16px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-    }
-    .card h2 {
-      font-size: 16px;
-      font-weight: 700;
-      color: #111827;
-      margin-bottom: 6px;
-    }
-    .card .subtitle {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-bottom: 20px;
-    }
+    .card{background:#fff;border-radius:14px;padding:28px 32px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+    .card h2{font-size:15px;font-weight:700;color:#111827;margin-bottom:5px;line-height:1.4}
+    .card .sub{font-size:13px;color:#9ca3af;margin-bottom:18px}
+    .divider{height:1px;background:#f3f4f6;margin:0 0 20px}
 
-    /* Input fields */
-    .field { margin-bottom: 20px; }
-    .field label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: #374151;
-      margin-bottom: 7px;
-    }
-    .field input[type="text"],
-    .field input[type="email"],
-    .field textarea {
-      width: 100%;
-      padding: 11px 14px;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 9px;
-      font-size: 14px;
-      color: #111827;
-      background: #fafafa;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
-      resize: vertical;
-    }
-    .field input:focus,
-    .field textarea:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
-      background: #fff;
-    }
-
-    /* Checkbox grid */
-    .checkbox-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    @media (max-width: 480px) {
-      .checkbox-grid { grid-template-columns: 1fr; }
-    }
-    .checkbox-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 14px;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 9px;
-      cursor: pointer;
-      transition: all 0.15s;
-      background: #fafafa;
-    }
-    .checkbox-item:hover { border-color: #93c5fd; background: #eff6ff; }
-    .checkbox-item input[type="checkbox"] { display: none; }
-    .checkbox-item .check-box {
-      width: 18px; height: 18px;
-      border: 2px solid #d1d5db;
-      border-radius: 5px;
-      flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
-    }
-    .checkbox-item input:checked ~ .check-box {
-      background: #3b82f6;
-      border-color: #3b82f6;
-    }
-    .checkbox-item input:checked ~ .check-box::after {
-      content: '';
-      width: 5px; height: 9px;
-      border: 2px solid #fff;
-      border-top: none; border-left: none;
-      transform: rotate(45deg) translateY(-1px);
-      display: block;
-    }
-    .checkbox-item .item-label { font-size: 13.5px; color: #374151; font-weight: 500; }
-    .checkbox-item.selected { border-color: #3b82f6; background: #eff6ff; }
+    /* Input */
+    .field{margin-bottom:18px}
+    .field:last-child{margin-bottom:0}
+    .field label{display:block;font-size:13.5px;font-weight:600;color:#374151;margin-bottom:6px}
+    .field input[type=text],.field input[type=email],.field textarea{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:14px;color:#111827;background:#fafafa;outline:none;resize:vertical;transition:border-color .2s,box-shadow .2s}
+    .field input:focus,.field textarea:focus{border-color:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.12);background:#fff}
+    .req{color:#ef4444;margin-left:2px}
 
     /* Radio pills */
-    .radio-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .radio-pill {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 18px;
-      border: 1.5px solid #e5e7eb;
-      border-radius: 50px;
-      cursor: pointer;
-      font-size: 13.5px;
-      font-weight: 500;
-      color: #374151;
-      background: #fafafa;
-      transition: all 0.15s;
-    }
-    .radio-pill:hover { border-color: #93c5fd; background: #eff6ff; }
-    .radio-pill input[type="radio"] { display: none; }
-    .radio-pill.selected { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
+    .radio-group{display:flex;flex-wrap:wrap;gap:8px}
+    .r-pill{display:flex;align-items:center;gap:7px;padding:8px 16px;border:1.5px solid #e5e7eb;border-radius:50px;cursor:pointer;font-size:13px;font-weight:500;color:#374151;background:#fafafa;transition:all .15s;user-select:none}
+    .r-pill:hover{border-color:#86efac;background:#f0fdf4}
+    .r-pill input{display:none}
+    .r-pill.selected{border-color:#22c55e;background:#f0fdf4;color:#15803d}
+
+    /* Checkbox grid */
+    .cb-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    @media(max-width:500px){.cb-grid{grid-template-columns:1fr}}
+    .cb-item{display:flex;align-items:center;gap:9px;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:9px;cursor:pointer;background:#fafafa;transition:all .15s;user-select:none}
+    .cb-item:hover{border-color:#86efac;background:#f0fdf4}
+    .cb-item input{display:none}
+    .cb-box{width:17px;height:17px;border:2px solid #d1d5db;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+    .cb-item input:checked~.cb-box{background:#22c55e;border-color:#22c55e}
+    .cb-item input:checked~.cb-box::after{content:'';width:4px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);display:block}
+    .cb-item .cb-lbl{font-size:13px;color:#374151;font-weight:500}
+    .cb-item.selected{border-color:#22c55e;background:#f0fdf4}
 
     /* Star rating */
-    .stars-row {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .star-item { display: flex; flex-direction: column; gap: 8px; }
-    .star-item .star-label { font-size: 13.5px; font-weight: 600; color: #374151; }
-    .stars {
-      display: flex;
-      gap: 6px;
-    }
-    .star {
-      font-size: 28px;
-      cursor: pointer;
-      color: #d1d5db;
-      transition: color 0.15s, transform 0.1s;
-      line-height: 1;
-    }
-    .star:hover, .star.active { color: #f59e0b; }
-    .star:hover { transform: scale(1.15); }
+    .stars-section{display:flex;flex-direction:column;gap:16px}
+    .star-row{display:flex;flex-direction:column;gap:6px}
+    .star-row-label{font-size:13px;font-weight:600;color:#374151}
+    .stars{display:flex;gap:5px}
+    .star{font-size:26px;cursor:pointer;color:#d1d5db;transition:color .15s,transform .1s;line-height:1}
+    .star:hover,.star.on{color:#f59e0b}
+    .star:hover{transform:scale(1.15)}
 
-    /* Status badge reference */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .badge-blue { background: #dbeafe; color: #1d4ed8; }
-    .badge-red { background: #fee2e2; color: #b91c1c; }
-    .badge-yellow { background: #fef3c7; color: #92400e; }
-    .badge-green { background: #d1fae5; color: #065f46; }
+    /* Scale (1-5 button row) */
+    .scale-group{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .scale-btn{width:40px;height:40px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;cursor:pointer;font-size:14px;font-weight:600;color:#374151;transition:all .15s}
+    .scale-btn:hover{border-color:#86efac;background:#f0fdf4}
+    .scale-btn.selected{border-color:#22c55e;background:#22c55e;color:#fff}
+    .scale-ends{display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:4px}
 
-    /* Submit button */
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: #3b82f6;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      margin-top: 8px;
-    }
-    .submit-btn:hover { background: #2563eb; }
-    .submit-btn:active { transform: scale(0.99); }
-    .submit-btn:disabled { background: #93c5fd; cursor: not-allowed; }
+    /* Submit */
+    .submit-btn{width:100%;padding:14px;background:#22c55e;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s}
+    .submit-btn:hover{background:#16a34a}
+    .submit-btn:active{transform:scale(.99)}
+    .submit-btn:disabled{background:#86efac;cursor:not-allowed}
+    .err{background:#fee2e2;color:#b91c1c;border-radius:8px;padding:12px 16px;font-size:13px;margin-top:12px;display:none}
 
-    /* Success state */
-    .success-screen {
-      display: none;
-      text-align: center;
-      padding: 60px 40px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-    }
-    .success-screen .check-circle {
-      width: 72px; height: 72px;
-      background: #d1fae5;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 36px;
-    }
-    .success-screen h2 { font-size: 22px; font-weight: 700; color: #111827; margin-bottom: 10px; }
-    .success-screen p { font-size: 15px; color: #6b7280; }
+    /* Success */
+    .success{display:none;text-align:center;padding:60px 40px;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+    .success .circle{width:72px;height:72px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px}
+    .success h2{font-size:22px;font-weight:700;color:#111827;margin-bottom:10px}
+    .success p{font-size:15px;color:#6b7280}
 
-    /* Error msg */
-    .error-msg {
-      background: #fee2e2;
-      color: #b91c1c;
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 13.5px;
-      margin-top: 12px;
-      display: none;
-    }
-
-    .divider {
-      height: 1px;
-      background: #f3f4f6;
-      margin: 8px 0 20px;
-    }
-
-    .required { color: #ef4444; margin-left: 2px; }
+    /* Question number badge */
+    .q-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:50%;font-size:11px;font-weight:700;color:#16a34a;margin-right:8px;flex-shrink:0}
+    .q-title{display:flex;align-items:flex-start;gap:0;margin-bottom:5px}
   </style>
 </head>
 <body>
-
 <div class="container">
 
   <!-- Header -->
   <div class="header">
     <div class="header-logo">
-      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="32" height="32" rx="8" fill="#3b82f6"/>
-        <path d="M8 10h10M8 16h16M8 22h12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-      </svg>
-      <span>PDF Extraction Tool</span>
+      <div class="logo-icon">SVD</div>
+      <span style="font-size:15px;font-weight:700;color:#15803d">Document Validation Dashboard</span>
     </div>
     <h1>Dashboard Feedback Survey</h1>
-    <p>Help us understand which parts of the dashboard matter most to you. This takes less than 2 minutes.</p>
+    <p>Help us improve the SVD dashboard experience. Your answers directly shape what we build next. Takes about 3 minutes.</p>
+    <div class="progress-bar-wrap">
+      <div class="progress-label">0 of 15 questions answered</div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
   </div>
 
-  <!-- Form -->
   <form id="surveyForm">
 
-    <!-- Q1: Your info -->
+    <!-- ── SECTION 1: About You ── -->
     <div class="card">
-      <h2>About You</h2>
+      <div class="section-label">About You</div>
       <div class="divider"></div>
       <div class="field">
-        <label>Your Name <span class="required">*</span></label>
-        <input type="text" id="name" placeholder="e.g. Priya Sharma" required />
+        <label>Your Name <span class="req">*</span></label>
+        <input type="text" id="name" placeholder="e.g. Priya Sharma" required/>
       </div>
-      <div class="field" style="margin-bottom:0">
-        <label>Your Email <span class="required">*</span></label>
-        <input type="email" id="email" placeholder="e.g. priya@company.com" required />
+      <div class="field">
+        <label>Your Email <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="e.g. priya@company.com" required/>
       </div>
-    </div>
-
-    <!-- Q2: First thing you look at -->
-    <div class="card">
-      <h2>1. What's the first thing you look at when you open the dashboard?</h2>
-      <p class="subtitle">Pick the one metric or section that catches your eye first.</p>
-      <div class="radio-group" id="firstLookGroup">
-        <label class="radio-pill">
-          <input type="radio" name="firstLook" value="Total Data Elements" />
-          Total Data Elements
-        </label>
-        <label class="radio-pill">
-          <input type="radio" name="firstLook" value="Total Estimated Time" />
-          Total Estimated Time
-        </label>
-        <label class="radio-pill">
-          <input type="radio" name="firstLook" value="Progress %" />
-          Progress %
-        </label>
-        <label class="radio-pill">
-          <input type="radio" name="firstLook" value="Items Under Review" />
-          Items Under Review
-        </label>
-        <label class="radio-pill">
-          <input type="radio" name="firstLook" value="Data Check Required" />
-          Data Check Required
-        </label>
-        <label class="radio-pill">
-          <input type="radio" name="firstLook" value="Verification Required" />
-          Verification Required
-        </label>
-        <label class="radio-pill">
-          <input type="radio" name="firstLook" value="Completed Count" />
-          Completed Count
-        </label>
-        <label class="radio-pill">
-          <input type="radio" name="firstLook" value="Document Table" />
-          Document Table
-        </label>
-      </div>
-    </div>
-
-    <!-- Q3: Most useful sections -->
-    <div class="card">
-      <h2>2. Which sections do you find most useful?</h2>
-      <p class="subtitle">Select all that apply.</p>
-      <div class="checkbox-grid" id="usefulSectionsGroup">
-        <label class="checkbox-item">
-          <input type="checkbox" value="Summary Metrics Cards" />
-          <span class="check-box"></span>
-          <span class="item-label">📊 Summary Metrics Cards</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Progress Donut Chart" />
-          <span class="check-box"></span>
-          <span class="item-label">🍩 Progress Donut Chart</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Items Under Review count" />
-          <span class="check-box"></span>
-          <span class="item-label">🔍 Items Under Review</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Data Check Required count" />
-          <span class="check-box"></span>
-          <span class="item-label">⚠️ Data Check Required</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Verification Required count" />
-          <span class="check-box"></span>
-          <span class="item-label">✅ Verification Required</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Completed count" />
-          <span class="check-box"></span>
-          <span class="item-label">🟢 Completed Count</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Document Table" />
-          <span class="check-box"></span>
-          <span class="item-label">📋 Document Table</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="File Type Filter" />
-          <span class="check-box"></span>
-          <span class="item-label">🗂️ File Type Filter</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Q4: Most important table columns -->
-    <div class="card">
-      <h2>3. Which columns in the document table do you use most?</h2>
-      <p class="subtitle">Select all that apply.</p>
-      <div class="checkbox-grid" id="tableColumnsGroup">
-        <label class="checkbox-item">
-          <input type="checkbox" value="Source (file name)" />
-          <span class="check-box"></span>
-          <span class="item-label">📄 Source (file name)</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Status" />
-          <span class="check-box"></span>
-          <span class="item-label">🏷️ Status</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Progress & Est Time" />
-          <span class="check-box"></span>
-          <span class="item-label">⏱️ Progress & Est Time</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="User" />
-          <span class="check-box"></span>
-          <span class="item-label">👤 User</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Data Added date" />
-          <span class="check-box"></span>
-          <span class="item-label">📅 Data Added</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Effective Date" />
-          <span class="check-box"></span>
-          <span class="item-label">📅 Effective Date</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Data Elements count" />
-          <span class="check-box"></span>
-          <span class="item-label">🔢 Data Elements</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="Actions (view/edit)" />
-          <span class="check-box"></span>
-          <span class="item-label">⚙️ Actions</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Q5: Ratings -->
-    <div class="card">
-      <h2>4. How useful are these dashboard sections to you?</h2>
-      <p class="subtitle">Rate each from 1 (not useful) to 5 (very useful).</p>
-      <div class="stars-row">
-        <div class="star-item">
-          <span class="star-label">Summary Metrics Cards (Total Elements, Time, Progress)</span>
-          <div class="stars" data-index="0">
-            <span class="star" data-val="1">★</span>
-            <span class="star" data-val="2">★</span>
-            <span class="star" data-val="3">★</span>
-            <span class="star" data-val="4">★</span>
-            <span class="star" data-val="5">★</span>
-          </div>
-        </div>
-        <div class="star-item">
-          <span class="star-label">Status Cards (Under Review, Data Check, Verification, Completed)</span>
-          <div class="stars" data-index="1">
-            <span class="star" data-val="1">★</span>
-            <span class="star" data-val="2">★</span>
-            <span class="star" data-val="3">★</span>
-            <span class="star" data-val="4">★</span>
-            <span class="star" data-val="5">★</span>
-          </div>
-        </div>
-        <div class="star-item">
-          <span class="star-label">Document Table (file list, columns, filters)</span>
-          <div class="stars" data-index="2">
-            <span class="star" data-val="1">★</span>
-            <span class="star" data-val="2">★</span>
-            <span class="star" data-val="3">★</span>
-            <span class="star" data-val="4">★</span>
-            <span class="star" data-val="5">★</span>
-          </div>
-        </div>
-        <div class="star-item">
-          <span class="star-label">Overall dashboard (layout, clarity, ease of use)</span>
-          <div class="stars" data-index="3">
-            <span class="star" data-val="1">★</span>
-            <span class="star" data-val="2">★</span>
-            <span class="star" data-val="3">★</span>
-            <span class="star" data-val="4">★</span>
-            <span class="star" data-val="5">★</span>
-          </div>
+      <div class="field">
+        <label>Your Role</label>
+        <div class="radio-group" id="roleGroup">
+          <label class="r-pill"><input type="radio" name="role" value="Validator"/>Validator</label>
+          <label class="r-pill"><input type="radio" name="role" value="Verifier"/>Verifier</label>
+          <label class="r-pill"><input type="radio" name="role" value="Team Lead"/>Team Lead</label>
+          <label class="r-pill"><input type="radio" name="role" value="Admin"/>Admin</label>
+          <label class="r-pill"><input type="radio" name="role" value="Other"/>Other</label>
         </div>
       </div>
     </div>
 
-    <!-- Q6: Missing data -->
+    <!-- ── SECTION 2: Screen & Setup ── -->
     <div class="card">
-      <h2>5. Is there any data or feature missing from the dashboard?</h2>
-      <p class="subtitle">What would make this dashboard more useful for you?</p>
-      <div class="field" style="margin-bottom:0">
-        <textarea id="feedback" rows="4" placeholder="e.g. I'd love to see a filter by user, or a chart showing completed vs pending over time..."></textarea>
+      <div class="section-label">Your Setup</div>
+      <div class="divider"></div>
+
+      <!-- Q1 -->
+      <div style="margin-bottom:24px">
+        <div class="q-title"><span class="q-num">1</span><h2>What screen resolution do you primarily use when working on SVD?</h2></div>
+        <p class="sub">This helps us design for the right screen size.</p>
+        <div class="radio-group" id="q1">
+          <label class="r-pill"><input type="radio" name="q1" value="1366x768"/>1366 × 768 (Laptop)</label>
+          <label class="r-pill"><input type="radio" name="q1" value="1440x900"/>1440 × 900</label>
+          <label class="r-pill"><input type="radio" name="q1" value="1920x1080"/>1920 × 1080 (Full HD)</label>
+          <label class="r-pill"><input type="radio" name="q1" value="2560x1440"/>2560 × 1440</label>
+          <label class="r-pill"><input type="radio" name="q1" value="Not sure"/>Not sure</label>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div>
+        <div class="q-title"><span class="q-num">2</span><h2>Does the dashboard currently display well on your screen?</h2></div>
+        <p class="sub">Think about font sizes, spacing, and whether you need to scroll a lot.</p>
+        <div class="radio-group" id="q2">
+          <label class="r-pill"><input type="radio" name="q2" value="Yes, looks great"/>Yes, looks great</label>
+          <label class="r-pill"><input type="radio" name="q2" value="Mostly, minor issues"/>Mostly, minor issues</label>
+          <label class="r-pill"><input type="radio" name="q2" value="No, fonts are too big"/>No, fonts too big</label>
+          <label class="r-pill"><input type="radio" name="q2" value="No, too much scrolling"/>No, too much scrolling</label>
+          <label class="r-pill"><input type="radio" name="q2" value="No, layout is cramped"/>No, layout cramped</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: Dashboard Overview ── -->
+    <div class="card">
+      <div class="section-label">Dashboard Overview</div>
+      <div class="divider"></div>
+
+      <!-- Q3 -->
+      <div style="margin-bottom:24px">
+        <div class="q-title"><span class="q-num">3</span><h2>What is the first thing you look at when you open the dashboard?</h2></div>
+        <p class="sub">Pick the one that catches your eye first.</p>
+        <div class="radio-group" id="q3">
+          <label class="r-pill"><input type="radio" name="q3" value="Total Data Elements"/>Total Data Elements</label>
+          <label class="r-pill"><input type="radio" name="q3" value="Total Estimated Time"/>Total Estimated Time</label>
+          <label class="r-pill"><input type="radio" name="q3" value="Progress %"/>Progress %</label>
+          <label class="r-pill"><input type="radio" name="q3" value="Items Under Review"/>Items Under Review</label>
+          <label class="r-pill"><input type="radio" name="q3" value="Data Check Required"/>Data Check Required</label>
+          <label class="r-pill"><input type="radio" name="q3" value="Verification Required"/>Verification Required</label>
+          <label class="r-pill"><input type="radio" name="q3" value="Completed count"/>Completed Count</label>
+          <label class="r-pill"><input type="radio" name="q3" value="Document table"/>Document Table</label>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div style="margin-bottom:24px">
+        <div class="q-title"><span class="q-num">4</span><h2>Should the status cards (Under Review, Data Check, etc.) act as clickable filters for the document table?</h2></div>
+        <p class="sub">e.g. clicking "Under Review" would show only those documents below.</p>
+        <div class="radio-group" id="q4">
+          <label class="r-pill"><input type="radio" name="q4" value="Yes, definitely"/>Yes, definitely</label>
+          <label class="r-pill"><input type="radio" name="q4" value="Yes, would be helpful"/>Yes, would be helpful</label>
+          <label class="r-pill"><input type="radio" name="q4" value="No, not needed"/>No, not needed</label>
+          <label class="r-pill"><input type="radio" name="q4" value="No preference"/>No preference</label>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div>
+        <div class="q-title"><span class="q-num">5</span><h2>Do you prefer seeing only your own assigned files, or the full team dashboard?</h2></div>
+        <p class="sub">Should the dashboard be personalised to your work?</p>
+        <div class="radio-group" id="q5">
+          <label class="r-pill"><input type="radio" name="q5" value="My files only"/>My files only</label>
+          <label class="r-pill"><input type="radio" name="q5" value="Full team view"/>Full team view</label>
+          <label class="r-pill"><input type="radio" name="q5" value="Both — let me toggle"/>Both — let me toggle</label>
+          <label class="r-pill"><input type="radio" name="q5" value="No preference"/>No preference</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4: Document Table ── -->
+    <div class="card">
+      <div class="section-label">Document Table</div>
+      <div class="divider"></div>
+
+      <!-- Q6 -->
+      <div style="margin-bottom:24px">
+        <div class="q-title"><span class="q-num">6</span><h2>Which sections of the dashboard do you find most useful?</h2></div>
+        <p class="sub">Select all that apply.</p>
+        <div class="cb-grid" id="q6">
+          <label class="cb-item"><input type="checkbox" value="Summary Metrics Cards"/><span class="cb-box"></span><span class="cb-lbl">📊 Summary Metrics Cards</span></label>
+          <label class="cb-item"><input type="checkbox" value="Progress Donut Chart"/><span class="cb-box"></span><span class="cb-lbl">🍩 Progress Donut Chart</span></label>
+          <label class="cb-item"><input type="checkbox" value="Items Under Review"/><span class="cb-box"></span><span class="cb-lbl">🔍 Items Under Review</span></label>
+          <label class="cb-item"><input type="checkbox" value="Data Check Required"/><span class="cb-box"></span><span class="cb-lbl">⚠️ Data Check Required</span></label>
+          <label class="cb-item"><input type="checkbox" value="Verification Required"/><span class="cb-box"></span><span class="cb-lbl">✅ Verification Required</span></label>
+          <label class="cb-item"><input type="checkbox" value="Completed Count"/><span class="cb-box"></span><span class="cb-lbl">🟢 Completed Count</span></label>
+          <label class="cb-item"><input type="checkbox" value="Document Table"/><span class="cb-box"></span><span class="cb-lbl">📋 Document Table</span></label>
+          <label class="cb-item"><input type="checkbox" value="File Type Filter"/><span class="cb-box"></span><span class="cb-lbl">🗂️ File Type Filter</span></label>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div style="margin-bottom:24px">
+        <div class="q-title"><span class="q-num">7</span><h2>Which columns in the document table do you use most?</h2></div>
+        <p class="sub">Select all that apply.</p>
+        <div class="cb-grid" id="q7">
+          <label class="cb-item"><input type="checkbox" value="Source (file name)"/><span class="cb-box"></span><span class="cb-lbl">📄 Source (file name)</span></label>
+          <label class="cb-item"><input type="checkbox" value="Status"/><span class="cb-box"></span><span class="cb-lbl">🏷️ Status</span></label>
+          <label class="cb-item"><input type="checkbox" value="Progress & Est Time"/><span class="cb-box"></span><span class="cb-lbl">⏱️ Progress & Est Time</span></label>
+          <label class="cb-item"><input type="checkbox" value="User"/><span class="cb-box"></span><span class="cb-lbl">👤 User</span></label>
+          <label class="cb-item"><input type="checkbox" value="Data Added"/><span class="cb-box"></span><span class="cb-lbl">📅 Data Added</span></label>
+          <label class="cb-item"><input type="checkbox" value="Effective Date"/><span class="cb-box"></span><span class="cb-lbl">📅 Effective Date</span></label>
+          <label class="cb-item"><input type="checkbox" value="Data Elements count"/><span class="cb-box"></span><span class="cb-lbl">🔢 Data Elements</span></label>
+          <label class="cb-item"><input type="checkbox" value="Actions (view/edit)"/><span class="cb-box"></span><span class="cb-lbl">⚙️ Actions</span></label>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div>
+        <div class="q-title"><span class="q-num">8</span><h2>Is the "Estimated Time to Complete" column useful to you?</h2></div>
+        <p class="sub">This shows the system's estimate of how long a document will take to verify.</p>
+        <div class="radio-group" id="q8">
+          <label class="r-pill"><input type="radio" name="q8" value="Yes, I use it regularly"/>Yes, I use it regularly</label>
+          <label class="r-pill"><input type="radio" name="q8" value="Sometimes useful"/>Sometimes useful</label>
+          <label class="r-pill"><input type="radio" name="q8" value="No, I ignore it"/>No, I ignore it</label>
+          <label class="r-pill"><input type="radio" name="q8" value="It is inaccurate"/>It's inaccurate</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5: Upload & Workflow ── -->
+    <div class="card">
+      <div class="section-label">Upload &amp; Workflow</div>
+      <div class="divider"></div>
+
+      <!-- Q9 -->
+      <div style="margin-bottom:24px">
+        <div class="q-title"><span class="q-num">9</span><h2>How would you like to be notified when document extraction is complete?</h2></div>
+        <p class="sub">After you upload a file, extraction takes some time in the background.</p>
+        <div class="radio-group" id="q9">
+          <label class="r-pill"><input type="radio" name="q9" value="Toast notification (non-blocking)"/>Toast notification</label>
+          <label class="r-pill"><input type="radio" name="q9" value="Progress bar in corner"/>Progress bar in corner</label>
+          <label class="r-pill"><input type="radio" name="q9" value="Email notification"/>Email notification</label>
+          <label class="r-pill"><input type="radio" name="q9" value="Just update the table status"/>Just update table status</label>
+          <label class="r-pill"><input type="radio" name="q9" value="No notification needed"/>No notification needed</label>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div style="margin-bottom:24px">
+        <div class="q-title"><span class="q-num">10</span><h2>When an amendment with multiple airports is uploaded, how should it be displayed in the dashboard?</h2></div>
+        <p class="sub">An amendment folder can contain 20–30+ files for different airports.</p>
+        <div class="radio-group" id="q10">
+          <label class="r-pill"><input type="radio" name="q10" value="Show as one folder row, expandable"/>One folder row (expandable)</label>
+          <label class="r-pill"><input type="radio" name="q10" value="Show each file as separate row"/>Each file as a separate row</label>
+          <label class="r-pill"><input type="radio" name="q10" value="Show folder, then navigate inside"/>Folder level, then drill in</label>
+          <label class="r-pill"><input type="radio" name="q10" value="No preference"/>No preference</label>
+        </div>
+      </div>
+
+      <!-- Q11 -->
+      <div>
+        <div class="q-title"><span class="q-num">11</span><h2>When reviewing a document, would you like to switch between airports without leaving the review screen?</h2></div>
+        <p class="sub">e.g. a side panel listing all airports in the amendment, clickable from the review page.</p>
+        <div class="radio-group" id="q11">
+          <label class="r-pill"><input type="radio" name="q11" value="Yes, very useful"/>Yes, very useful</label>
+          <label class="r-pill"><input type="radio" name="q11" value="Prefer to go back to dashboard"/>Prefer to go back to dashboard</label>
+          <label class="r-pill"><input type="radio" name="q11" value="No preference"/>No preference</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 6: UX & Filters ── -->
+    <div class="card">
+      <div class="section-label">UX &amp; Filters</div>
+      <div class="divider"></div>
+
+      <!-- Q12 -->
+      <div style="margin-bottom:24px">
+        <div class="q-title"><span class="q-num">12</span><h2>Is the left panel (showing section/document details) useful when you are reviewing a document?</h2></div>
+        <p class="sub">The panel appears on the left side of the review screen.</p>
+        <div class="radio-group" id="q12">
+          <label class="r-pill"><input type="radio" name="q12" value="Yes, I use it often"/>Yes, I use it often</label>
+          <label class="r-pill"><input type="radio" name="q12" value="Sometimes"/>Sometimes</label>
+          <label class="r-pill"><input type="radio" name="q12" value="No, I never use it"/>No, I never use it</label>
+          <label class="r-pill"><input type="radio" name="q12" value="I didn't know it existed"/>Didn't know it existed</label>
+        </div>
+      </div>
+
+      <!-- Q13 -->
+      <div>
+        <div class="q-title"><span class="q-num">13</span><h2>When reviewing a document for the first time (no baseline), should the status filter be hidden?</h2></div>
+        <p class="sub">First-time reviews require verifying everything — the filter has no purpose yet.</p>
+        <div class="radio-group" id="q13">
+          <label class="r-pill"><input type="radio" name="q13" value="Yes, hide it for new docs"/>Yes, hide it for new docs</label>
+          <label class="r-pill"><input type="radio" name="q13" value="No, keep it visible"/>No, keep it visible</label>
+          <label class="r-pill"><input type="radio" name="q13" value="Disable it but keep visible"/>Disable it but keep visible</label>
+          <label class="r-pill"><input type="radio" name="q13" value="No preference"/>No preference</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 7: Ratings ── -->
+    <div class="card">
+      <div class="section-label">Ratings</div>
+      <div class="divider"></div>
+      <div class="q-title" style="margin-bottom:5px"><span class="q-num">14</span><h2>How useful are these sections to you? Rate each 1–5.</h2></div>
+      <p class="sub" style="margin-bottom:20px">1 = Not useful at all &nbsp;·&nbsp; 5 = Extremely useful</p>
+      <div class="stars-section">
+        <div class="star-row">
+          <span class="star-row-label">Summary Metrics (Total Elements, Time, Progress)</span>
+          <div class="stars" data-idx="0"><span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span></div>
+        </div>
+        <div class="star-row">
+          <span class="star-row-label">Status Cards (Under Review, Data Check, Verification, Completed)</span>
+          <div class="stars" data-idx="1"><span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span></div>
+        </div>
+        <div class="star-row">
+          <span class="star-row-label">Document Table (file list, columns, filters)</span>
+          <div class="stars" data-idx="2"><span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span></div>
+        </div>
+        <div class="star-row">
+          <span class="star-row-label">Overall dashboard layout and usability</span>
+          <div class="stars" data-idx="3"><span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 8: Open Feedback ── -->
+    <div class="card">
+      <div class="section-label">Open Feedback</div>
+      <div class="divider"></div>
+
+      <!-- Q15a -->
+      <div style="margin-bottom:20px">
+        <div class="q-title"><span class="q-num">15</span><h2>What is the most confusing or frustrating part of the current dashboard?</h2></div>
+        <p class="sub">Be as specific as you like.</p>
+        <div class="field" style="margin-bottom:0">
+          <textarea id="q15a" rows="3" placeholder="e.g. The header takes up too much space, hard to see the file list..."></textarea>
+        </div>
+      </div>
+
+      <!-- Q15b -->
+      <div>
+        <div class="q-title"><span class="q-num" style="background:#fef9c3;border-color:#fde047;color:#a16207">+</span><h2>Is there any data or feature missing from the dashboard?</h2></div>
+        <p class="sub">What would make SVD more useful for your day-to-day work?</p>
+        <div class="field" style="margin-bottom:0">
+          <textarea id="q15b" rows="3" placeholder="e.g. I'd like to filter by airport, see who else is working on the same amendment..."></textarea>
+        </div>
       </div>
     </div>
 
     <!-- Submit -->
-    <div class="card" style="padding: 24px 32px;">
+    <div class="card" style="padding:24px 32px">
       <button type="submit" class="submit-btn" id="submitBtn">Submit Feedback →</button>
-      <div class="error-msg" id="errorMsg">Something went wrong. Please try again.</div>
+      <div class="err" id="errMsg">Something went wrong. Please try again.</div>
     </div>
 
   </form>
 
-  <!-- Success screen -->
-  <div class="success-screen" id="successScreen">
-    <div class="check-circle">✅</div>
+  <!-- Success -->
+  <div class="success" id="successScreen">
+    <div class="circle">✅</div>
     <h2>Thank you for your feedback!</h2>
-    <p>Your response has been recorded. It will help us improve the dashboard experience.</p>
+    <p>Your response has been recorded and will directly help shape the next version of the SVD dashboard.</p>
   </div>
 
 </div>
 
 <script>
-  // ─── Supabase config ──────────────────────────────────────────
   const SUPABASE_URL = 'https://jpawzlpmrshxtpecfrmn.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_bBpoImrHw1qOfX69O8cWJA_ZDoVSB05';
 
-  // ─── Star rating logic ────────────────────────────────────────
-  const ratings = [0, 0, 0, 0]; // 4 rating groups
-
-  document.querySelectorAll('.stars').forEach(group => {
-    const index = parseInt(group.dataset.index);
+  // ── Star ratings ──────────────────────────────────────────────
+  const ratings = [0,0,0,0];
+  document.querySelectorAll('.stars').forEach(group=>{
+    const idx = parseInt(group.dataset.idx);
     const stars = group.querySelectorAll('.star');
-
-    stars.forEach(star => {
-      star.addEventListener('click', () => {
-        const val = parseInt(star.dataset.val);
-        ratings[index] = val;
-        stars.forEach(s => {
-          s.classList.toggle('active', parseInt(s.dataset.val) <= val);
-        });
+    stars.forEach(s=>{
+      s.addEventListener('click',()=>{
+        ratings[idx]=parseInt(s.dataset.v);
+        stars.forEach(x=>x.classList.toggle('on',parseInt(x.dataset.v)<=ratings[idx]));
+        updateProgress();
       });
-      star.addEventListener('mouseover', () => {
-        const val = parseInt(star.dataset.val);
-        stars.forEach(s => {
-          s.style.color = parseInt(s.dataset.val) <= val ? '#f59e0b' : '#d1d5db';
-        });
+      s.addEventListener('mouseover',()=>{
+        const v=parseInt(s.dataset.v);
+        stars.forEach(x=>x.style.color=parseInt(x.dataset.v)<=v?'#f59e0b':'#d1d5db');
       });
-      star.addEventListener('mouseout', () => {
-        stars.forEach(s => {
-          s.style.color = parseInt(s.dataset.val) <= ratings[index] ? '#f59e0b' : '#d1d5db';
-        });
+      s.addEventListener('mouseout',()=>{
+        stars.forEach(x=>x.style.color=parseInt(x.dataset.v)<=ratings[idx]?'#f59e0b':'#d1d5db');
       });
     });
   });
 
-  // ─── Radio pill highlight ─────────────────────────────────────
-  document.querySelectorAll('.radio-pill').forEach(pill => {
-    pill.querySelector('input').addEventListener('change', () => {
-      document.querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
+  // ── Radio pill highlight ──────────────────────────────────────
+  document.querySelectorAll('.r-pill').forEach(pill=>{
+    pill.querySelector('input').addEventListener('change',()=>{
+      const name=pill.querySelector('input').name;
+      document.querySelectorAll(`.r-pill input[name="${name}"]`).forEach(i=>i.closest('.r-pill').classList.remove('selected'));
       pill.classList.add('selected');
+      updateProgress();
     });
   });
 
-  // ─── Checkbox highlight ───────────────────────────────────────
-  document.querySelectorAll('.checkbox-item').forEach(item => {
-    item.querySelector('input').addEventListener('change', (e) => {
-      item.classList.toggle('selected', e.target.checked);
+  // ── Checkbox highlight ────────────────────────────────────────
+  document.querySelectorAll('.cb-item').forEach(item=>{
+    item.querySelector('input').addEventListener('change',e=>{
+      item.classList.toggle('selected',e.target.checked);
+      updateProgress();
     });
   });
 
-  // ─── Form submit ──────────────────────────────────────────────
-  document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+  // ── Progress bar ──────────────────────────────────────────────
+  function updateProgress(){
+    let answered=0;
+    // radios: q1-q5, q8-q13 = 11 radio groups
+    ['q1','q2','q3','q4','q5','q8','q9','q10','q11','q12','q13'].forEach(n=>{
+      if(document.querySelector(`input[name="${n}"]:checked`)) answered++;
+    });
+    // checkboxes: q6, q7 = 2 groups
+    if(document.querySelector('#q6 input:checked')) answered++;
+    if(document.querySelector('#q7 input:checked')) answered++;
+    // stars = 1 group (all 4 rated)
+    if(ratings.some(r=>r>0)) answered++;
+    // text: q15a, q15b = 1 group
+    if(document.getElementById('q15a').value.trim()||document.getElementById('q15b').value.trim()) answered++;
+    const total=15;
+    const pct=Math.round((answered/total)*100);
+    document.getElementById('progressFill').style.width=pct+'%';
+    document.querySelector('.progress-label').textContent=`${answered} of ${total} questions answered`;
+  }
+  document.querySelectorAll('textarea').forEach(t=>t.addEventListener('input',updateProgress));
+
+  // ── Form submit ───────────────────────────────────────────────
+  document.getElementById('surveyForm').addEventListener('submit',async e=>{
     e.preventDefault();
+    const name=document.getElementById('name').value.trim();
+    const email=document.getElementById('email').value.trim();
 
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const feedback = document.getElementById('feedback').value.trim();
+    // Collect all answers into useful_sections array
+    const answers=[];
+    const getR=n=>{const el=document.querySelector(`input[name="${n}"]:checked`);return el?el.value:'';};
 
-    // Collect checked useful sections
-    const usefulSections = [
-      ...document.querySelectorAll('#usefulSectionsGroup input:checked'),
-      ...document.querySelectorAll('#tableColumnsGroup input:checked')
-    ].map(cb => cb.value);
+    answers.push('role: '+(getR('role')||'Not specified'));
+    answers.push('Q1_resolution: '+(getR('q1')||'Not answered'));
+    answers.push('Q2_display: '+(getR('q2')||'Not answered'));
+    answers.push('Q3_first_look: '+(getR('q3')||'Not answered'));
+    answers.push('Q4_status_filter: '+(getR('q4')||'Not answered'));
+    answers.push('Q5_dashboard_view: '+(getR('q5')||'Not answered'));
 
-    // First look radio
-    const firstLook = document.querySelector('input[name="firstLook"]:checked')?.value || 'Not answered';
-    if (usefulSections.length === 0) usefulSections.push(firstLook);
-    else usefulSections.unshift('First look: ' + firstLook);
+    const q6=[...document.querySelectorAll('#q6 input:checked')].map(i=>i.value);
+    answers.push('Q6_useful_sections: '+( q6.length?q6.join(', '):'None selected'));
 
-    const btn = document.getElementById('submitBtn');
-    const errMsg = document.getElementById('errorMsg');
-    btn.disabled = true;
-    btn.textContent = 'Submitting...';
-    errMsg.style.display = 'none';
+    const q7=[...document.querySelectorAll('#q7 input:checked')].map(i=>i.value);
+    answers.push('Q7_table_columns: '+(q7.length?q7.join(', '):'None selected'));
 
-    try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/survey_responses`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': `Bearer ${SUPABASE_KEY}`,
-          'Prefer': 'return=minimal'
+    answers.push('Q8_est_time: '+(getR('q8')||'Not answered'));
+    answers.push('Q9_notification: '+(getR('q9')||'Not answered'));
+    answers.push('Q10_amendment_display: '+(getR('q10')||'Not answered'));
+    answers.push('Q11_airport_switch: '+(getR('q11')||'Not answered'));
+    answers.push('Q12_left_panel: '+(getR('q12')||'Not answered'));
+    answers.push('Q13_filter_hide: '+(getR('q13')||'Not answered'));
+
+    const q15a=document.getElementById('q15a').value.trim();
+    const q15b=document.getElementById('q15b').value.trim();
+    const combinedFeedback=(q15a?'Frustrations: '+q15a:'')+(q15a&&q15b?'\n\n':'')+(q15b?'Missing features: '+q15b:'');
+
+    const btn=document.getElementById('submitBtn');
+    const errMsg=document.getElementById('errMsg');
+    btn.disabled=true;btn.textContent='Submitting…';errMsg.style.display='none';
+
+    try{
+      const res=await fetch(`${SUPABASE_URL}/rest/v1/survey_responses`,{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+          'apikey':SUPABASE_KEY,
+          'Authorization':'Bearer '+SUPABASE_KEY,
+          'Prefer':'return=minimal'
         },
-        body: JSON.stringify({
-          name: name || 'Anonymous',
-          email: email || 'not-provided@survey.com',
-          useful_sections: usefulSections,
-          ratings: ratings,
-          feedback: feedback || null
+        body:JSON.stringify({
+          name:name||'Anonymous',
+          email:email||'not-provided@survey.com',
+          useful_sections:answers,
+          ratings:ratings,
+          feedback:combinedFeedback||null
         })
       });
-
-      if (res.ok || res.status === 201) {
-        document.getElementById('surveyForm').style.display = 'none';
-        document.querySelector('.header').style.display = 'none';
-        document.getElementById('successScreen').style.display = 'block';
+      if(res.ok||res.status===201){
+        document.getElementById('surveyForm').style.display='none';
+        document.querySelector('.header').style.display='none';
+        document.getElementById('successScreen').style.display='block';
       } else {
-        const errText = await res.text();
-        console.error('Supabase error:', res.status, errText);
-        errMsg.textContent = `Submission failed (${res.status}). Please try again.`;
-        errMsg.style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = 'Submit Feedback →';
+        const t=await res.text();
+        console.error(res.status,t);
+        errMsg.textContent=`Submission failed (${res.status}). Please try again.`;
+        errMsg.style.display='block';
+        btn.disabled=false;btn.textContent='Submit Feedback →';
       }
-    } catch (err) {
+    }catch(err){
       console.error(err);
-      errMsg.textContent = 'Network error. Please check your connection and try again.';
-      errMsg.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Submit Feedback →';
+      errMsg.textContent='Network error. Please check your connection.';
+      errMsg.style.display='block';
+      btn.disabled=false;btn.textContent='Submit Feedback →';
     }
   });
 </script>
