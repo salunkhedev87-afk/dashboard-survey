@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Feedback Survey – PDF Extraction Tool</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      padding: 40px 16px;
+      color: #1a202c;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 36px 40px 28px;
+      margin-bottom: 20px;
+      border-top: 5px solid #3b82f6;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .header-logo svg {
+      width: 32px; height: 32px;
+    }
+    .header-logo span {
+      font-size: 15px;
+      font-weight: 600;
+      color: #3b82f6;
+    }
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+    .header p {
+      font-size: 15px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    /* Card */
+    .card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .card h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+    .card .subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 20px;
+    }
+
+    /* Input fields */
+    .field { margin-bottom: 20px; }
+    .field label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 7px;
+    }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 9px;
+      font-size: 14px;
+      color: #111827;
+      background: #fafafa;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      resize: vertical;
+    }
+    .field input:focus,
+    .field textarea:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+      background: #fff;
+    }
+
+    /* Checkbox grid */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 480px) {
+      .checkbox-grid { grid-template-columns: 1fr; }
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: #fafafa;
+    }
+    .checkbox-item:hover { border-color: #93c5fd; background: #eff6ff; }
+    .checkbox-item input[type="checkbox"] { display: none; }
+    .checkbox-item .check-box {
+      width: 18px; height: 18px;
+      border: 2px solid #d1d5db;
+      border-radius: 5px;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .checkbox-item input:checked ~ .check-box {
+      background: #3b82f6;
+      border-color: #3b82f6;
+    }
+    .checkbox-item input:checked ~ .check-box::after {
+      content: '';
+      width: 5px; height: 9px;
+      border: 2px solid #fff;
+      border-top: none; border-left: none;
+      transform: rotate(45deg) translateY(-1px);
+      display: block;
+    }
+    .checkbox-item .item-label { font-size: 13.5px; color: #374151; font-weight: 500; }
+    .checkbox-item.selected { border-color: #3b82f6; background: #eff6ff; }
+
+    /* Radio pills */
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .radio-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #374151;
+      background: #fafafa;
+      transition: all 0.15s;
+    }
+    .radio-pill:hover { border-color: #93c5fd; background: #eff6ff; }
+    .radio-pill input[type="radio"] { display: none; }
+    .radio-pill.selected { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
+
+    /* Star rating */
+    .stars-row {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .star-item { display: flex; flex-direction: column; gap: 8px; }
+    .star-item .star-label { font-size: 13.5px; font-weight: 600; color: #374151; }
+    .stars {
+      display: flex;
+      gap: 6px;
+    }
+    .star {
+      font-size: 28px;
+      cursor: pointer;
+      color: #d1d5db;
+      transition: color 0.15s, transform 0.1s;
+      line-height: 1;
+    }
+    .star:hover, .star.active { color: #f59e0b; }
+    .star:hover { transform: scale(1.15); }
+
+    /* Status badge reference */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .badge-blue { background: #dbeafe; color: #1d4ed8; }
+    .badge-red { background: #fee2e2; color: #b91c1c; }
+    .badge-yellow { background: #fef3c7; color: #92400e; }
+    .badge-green { background: #d1fae5; color: #065f46; }
+
+    /* Submit button */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: #3b82f6;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 8px;
+    }
+    .submit-btn:hover { background: #2563eb; }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { background: #93c5fd; cursor: not-allowed; }
+
+    /* Success state */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 60px 40px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .success-screen .check-circle {
+      width: 72px; height: 72px;
+      background: #d1fae5;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 36px;
+    }
+    .success-screen h2 { font-size: 22px; font-weight: 700; color: #111827; margin-bottom: 10px; }
+    .success-screen p { font-size: 15px; color: #6b7280; }
+
+    /* Error msg */
+    .error-msg {
+      background: #fee2e2;
+      color: #b91c1c;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13.5px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .divider {
+      height: 1px;
+      background: #f3f4f6;
+      margin: 8px 0 20px;
+    }
+
+    .required { color: #ef4444; margin-left: 2px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="32" height="32" rx="8" fill="#3b82f6"/>
+        <path d="M8 10h10M8 16h16M8 22h12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span>PDF Extraction Tool</span>
+    </div>
+    <h1>Dashboard Feedback Survey</h1>
+    <p>Help us understand which parts of the dashboard matter most to you. This takes less than 2 minutes.</p>
+  </div>
+
+  <!-- Form -->
+  <form id="surveyForm">
+
+    <!-- Q1: Your info -->
+    <div class="card">
+      <h2>About You</h2>
+      <div class="divider"></div>
+      <div class="field">
+        <label>Your Name <span class="required">*</span></label>
+        <input type="text" id="name" placeholder="e.g. Priya Sharma" required />
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>Your Email <span class="required">*</span></label>
+        <input type="email" id="email" placeholder="e.g. priya@company.com" required />
+      </div>
+    </div>
+
+    <!-- Q2: First thing you look at -->
+    <div class="card">
+      <h2>1. What's the first thing you look at when you open the dashboard?</h2>
+      <p class="subtitle">Pick the one metric or section that catches your eye first.</p>
+      <div class="radio-group" id="firstLookGroup">
+        <label class="radio-pill">
+          <input type="radio" name="firstLook" value="Total Data Elements" />
+          Total Data Elements
+        </label>
+        <label class="radio-pill">
+          <input type="radio" name="firstLook" value="Total Estimated Time" />
+          Total Estimated Time
+        </label>
+        <label class="radio-pill">
+          <input type="radio" name="firstLook" value="Progress %" />
+          Progress %
+        </label>
+        <label class="radio-pill">
+          <input type="radio" name="firstLook" value="Items Under Review" />
+          Items Under Review
+        </label>
+        <label class="radio-pill">
+          <input type="radio" name="firstLook" value="Data Check Required" />
+          Data Check Required
+        </label>
+        <label class="radio-pill">
+          <input type="radio" name="firstLook" value="Verification Required" />
+          Verification Required
+        </label>
+        <label class="radio-pill">
+          <input type="radio" name="firstLook" value="Completed Count" />
+          Completed Count
+        </label>
+        <label class="radio-pill">
+          <input type="radio" name="firstLook" value="Document Table" />
+          Document Table
+        </label>
+      </div>
+    </div>
+
+    <!-- Q3: Most useful sections -->
+    <div class="card">
+      <h2>2. Which sections do you find most useful?</h2>
+      <p class="subtitle">Select all that apply.</p>
+      <div class="checkbox-grid" id="usefulSectionsGroup">
+        <label class="checkbox-item">
+          <input type="checkbox" value="Summary Metrics Cards" />
+          <span class="check-box"></span>
+          <span class="item-label">📊 Summary Metrics Cards</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Progress Donut Chart" />
+          <span class="check-box"></span>
+          <span class="item-label">🍩 Progress Donut Chart</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Items Under Review count" />
+          <span class="check-box"></span>
+          <span class="item-label">🔍 Items Under Review</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Data Check Required count" />
+          <span class="check-box"></span>
+          <span class="item-label">⚠️ Data Check Required</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Verification Required count" />
+          <span class="check-box"></span>
+          <span class="item-label">✅ Verification Required</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Completed count" />
+          <span class="check-box"></span>
+          <span class="item-label">🟢 Completed Count</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Document Table" />
+          <span class="check-box"></span>
+          <span class="item-label">📋 Document Table</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="File Type Filter" />
+          <span class="check-box"></span>
+          <span class="item-label">🗂️ File Type Filter</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Q4: Most important table columns -->
+    <div class="card">
+      <h2>3. Which columns in the document table do you use most?</h2>
+      <p class="subtitle">Select all that apply.</p>
+      <div class="checkbox-grid" id="tableColumnsGroup">
+        <label class="checkbox-item">
+          <input type="checkbox" value="Source (file name)" />
+          <span class="check-box"></span>
+          <span class="item-label">📄 Source (file name)</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Status" />
+          <span class="check-box"></span>
+          <span class="item-label">🏷️ Status</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Progress & Est Time" />
+          <span class="check-box"></span>
+          <span class="item-label">⏱️ Progress & Est Time</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="User" />
+          <span class="check-box"></span>
+          <span class="item-label">👤 User</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Data Added date" />
+          <span class="check-box"></span>
+          <span class="item-label">📅 Data Added</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Effective Date" />
+          <span class="check-box"></span>
+          <span class="item-label">📅 Effective Date</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Data Elements count" />
+          <span class="check-box"></span>
+          <span class="item-label">🔢 Data Elements</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="Actions (view/edit)" />
+          <span class="check-box"></span>
+          <span class="item-label">⚙️ Actions</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Q5: Ratings -->
+    <div class="card">
+      <h2>4. How useful are these dashboard sections to you?</h2>
+      <p class="subtitle">Rate each from 1 (not useful) to 5 (very useful).</p>
+      <div class="stars-row">
+        <div class="star-item">
+          <span class="star-label">Summary Metrics Cards (Total Elements, Time, Progress)</span>
+          <div class="stars" data-index="0">
+            <span class="star" data-val="1">★</span>
+            <span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span>
+            <span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+        </div>
+        <div class="star-item">
+          <span class="star-label">Status Cards (Under Review, Data Check, Verification, Completed)</span>
+          <div class="stars" data-index="1">
+            <span class="star" data-val="1">★</span>
+            <span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span>
+            <span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+        </div>
+        <div class="star-item">
+          <span class="star-label">Document Table (file list, columns, filters)</span>
+          <div class="stars" data-index="2">
+            <span class="star" data-val="1">★</span>
+            <span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span>
+            <span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+        </div>
+        <div class="star-item">
+          <span class="star-label">Overall dashboard (layout, clarity, ease of use)</span>
+          <div class="stars" data-index="3">
+            <span class="star" data-val="1">★</span>
+            <span class="star" data-val="2">★</span>
+            <span class="star" data-val="3">★</span>
+            <span class="star" data-val="4">★</span>
+            <span class="star" data-val="5">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6: Missing data -->
+    <div class="card">
+      <h2>5. Is there any data or feature missing from the dashboard?</h2>
+      <p class="subtitle">What would make this dashboard more useful for you?</p>
+      <div class="field" style="margin-bottom:0">
+        <textarea id="feedback" rows="4" placeholder="e.g. I'd love to see a filter by user, or a chart showing completed vs pending over time..."></textarea>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="card" style="padding: 24px 32px;">
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Feedback →</button>
+      <div class="error-msg" id="errorMsg">Something went wrong. Please try again.</div>
+    </div>
+
+  </form>
+
+  <!-- Success screen -->
+  <div class="success-screen" id="successScreen">
+    <div class="check-circle">✅</div>
+    <h2>Thank you for your feedback!</h2>
+    <p>Your response has been recorded. It will help us improve the dashboard experience.</p>
+  </div>
+
+</div>
+
+<script>
+  // ─── Supabase config ──────────────────────────────────────────
+  const SUPABASE_URL = 'https://jpawzlpmrshxtpecfrmn.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_bBpoImrHw1qOfX69O8cWJA_ZDoVSB05';
+
+  // ─── Star rating logic ────────────────────────────────────────
+  const ratings = [0, 0, 0, 0]; // 4 rating groups
+
+  document.querySelectorAll('.stars').forEach(group => {
+    const index = parseInt(group.dataset.index);
+    const stars = group.querySelectorAll('.star');
+
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const val = parseInt(star.dataset.val);
+        ratings[index] = val;
+        stars.forEach(s => {
+          s.classList.toggle('active', parseInt(s.dataset.val) <= val);
+        });
+      });
+      star.addEventListener('mouseover', () => {
+        const val = parseInt(star.dataset.val);
+        stars.forEach(s => {
+          s.style.color = parseInt(s.dataset.val) <= val ? '#f59e0b' : '#d1d5db';
+        });
+      });
+      star.addEventListener('mouseout', () => {
+        stars.forEach(s => {
+          s.style.color = parseInt(s.dataset.val) <= ratings[index] ? '#f59e0b' : '#d1d5db';
+        });
+      });
+    });
+  });
+
+  // ─── Radio pill highlight ─────────────────────────────────────
+  document.querySelectorAll('.radio-pill').forEach(pill => {
+    pill.querySelector('input').addEventListener('change', () => {
+      document.querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
+      pill.classList.add('selected');
+    });
+  });
+
+  // ─── Checkbox highlight ───────────────────────────────────────
+  document.querySelectorAll('.checkbox-item').forEach(item => {
+    item.querySelector('input').addEventListener('change', (e) => {
+      item.classList.toggle('selected', e.target.checked);
+    });
+  });
+
+  // ─── Form submit ──────────────────────────────────────────────
+  document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const feedback = document.getElementById('feedback').value.trim();
+
+    // Collect checked useful sections
+    const usefulSections = [
+      ...document.querySelectorAll('#usefulSectionsGroup input:checked'),
+      ...document.querySelectorAll('#tableColumnsGroup input:checked')
+    ].map(cb => cb.value);
+
+    // First look radio
+    const firstLook = document.querySelector('input[name="firstLook"]:checked')?.value || 'Not answered';
+    if (usefulSections.length === 0) usefulSections.push(firstLook);
+    else usefulSections.unshift('First look: ' + firstLook);
+
+    const btn = document.getElementById('submitBtn');
+    const errMsg = document.getElementById('errorMsg');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    errMsg.style.display = 'none';
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/survey_responses`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          name: name || 'Anonymous',
+          email: email || 'not-provided@survey.com',
+          useful_sections: usefulSections,
+          ratings: ratings,
+          feedback: feedback || null
+        })
+      });
+
+      if (res.ok || res.status === 201) {
+        document.getElementById('surveyForm').style.display = 'none';
+        document.querySelector('.header').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+      } else {
+        const errText = await res.text();
+        console.error('Supabase error:', res.status, errText);
+        errMsg.textContent = `Submission failed (${res.status}). Please try again.`;
+        errMsg.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Submit Feedback →';
+      }
+    } catch (err) {
+      console.error(err);
+      errMsg.textContent = 'Network error. Please check your connection and try again.';
+      errMsg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Submit Feedback →';
+    }
+  });
+</script>
+</body>
+</html>
