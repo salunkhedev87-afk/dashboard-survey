@@ -3,91 +3,158 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SVD Dashboard Feedback Survey</title>
+  <title>UDPP Dashboard Feedback Survey</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f4f8;min-height:100vh;padding:40px 16px;color:#1a202c}
-    .container{max-width:700px;margin:0 auto}
+    :root {
+      --blue-primary:   #0033A1;
+      --blue-secondary: #0057B8;
+      --blue-light:     #E8EDF8;
+      --bg:             #F4F6FA;
+      --card-bg:        #FFFFFF;
+      --border:         #D9E1EC;
+      --text-primary:   #1F2A44;
+      --text-secondary: #4A5568;
+      --text-muted:     #8A96A8;
+      --success:        #2E7D32;
+      --success-bg:     #EDF7EE;
+      --warning:        #ED6C02;
+      --warning-bg:     #FFF3E0;
+      --error:          #D32F2F;
+      --error-bg:       #FDECEA;
+      --radius:         5px;
+      --radius-lg:      6px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      padding: 36px 16px 60px;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .container { max-width: 760px; margin: 0 auto; }
 
     /* Header */
-    .header{background:#fff;border-radius:16px;padding:36px 40px 28px;margin-bottom:20px;border-top:5px solid #22c55e;box-shadow:0 2px 12px rgba(0,0,0,.07)}
-    .header-logo{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-    .logo-icon{width:36px;height:36px;background:#f0fdf4;border:2px solid #22c55e;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#16a34a}
-    .header h1{font-size:24px;font-weight:700;color:#111827;margin-bottom:8px}
-    .header p{font-size:15px;color:#6b7280;line-height:1.6}
-    .progress-bar-wrap{margin-top:20px}
-    .progress-label{font-size:12px;color:#9ca3af;margin-bottom:6px}
-    .progress-track{height:4px;background:#e5e7eb;border-radius:4px;overflow:hidden}
-    .progress-fill{height:4px;background:#22c55e;border-radius:4px;transition:width .4s ease;width:0%}
+    .header { background: var(--blue-primary); border-radius: var(--radius-lg); padding: 32px 40px 28px; margin-bottom: 20px; color: #fff; }
+    .header-top { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .boeing-logo { background: rgba(255,255,255,.15); border: 1.5px solid rgba(255,255,255,.3); border-radius: var(--radius); padding: 6px 12px; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fff; }
+    .divider-v { width: 1px; height: 28px; background: rgba(255,255,255,.25); }
+    .header-app { font-size: 13px; color: rgba(255,255,255,.8); font-weight: 500; }
+    .header h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .header p { font-size: 13.5px; color: rgba(255,255,255,.8); line-height: 1.6; max-width: 560px; }
+    .progress-wrap { margin-top: 20px; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,.7); margin-bottom: 6px; }
+    .progress-track { height: 5px; background: rgba(255,255,255,.25); border-radius: 10px; overflow: hidden; }
+    .progress-fill { height: 5px; background: #fff; border-radius: 10px; width: 0%; transition: width .4s ease; }
 
-    /* Section label */
-    .section-label{font-size:11px;font-weight:700;color:#22c55e;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+    /* Section header */
+    .section-header { display: flex; align-items: center; gap: 10px; padding: 10px 0 10px; margin-bottom: 12px; }
+    .section-icon { width: 28px; height: 28px; background: var(--blue-primary); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .section-title { font-size: 11px; font-weight: 700; color: var(--blue-primary); text-transform: uppercase; letter-spacing: .08em; }
 
     /* Card */
-    .card{background:#fff;border-radius:14px;padding:28px 32px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-    .card h2{font-size:15px;font-weight:700;color:#111827;margin-bottom:5px;line-height:1.4}
-    .card .sub{font-size:13px;color:#9ca3af;margin-bottom:18px}
-    .divider{height:1px;background:#f3f4f6;margin:0 0 20px}
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; margin-bottom: 14px; }
+    .card-divider { height: 1px; background: var(--border); margin: 0 -28px 20px; }
 
-    /* Input */
-    .field{margin-bottom:18px}
-    .field:last-child{margin-bottom:0}
-    .field label{display:block;font-size:13.5px;font-weight:600;color:#374151;margin-bottom:6px}
-    .field input[type=text],.field input[type=email],.field textarea{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:14px;color:#111827;background:#fafafa;outline:none;resize:vertical;transition:border-color .2s,box-shadow .2s}
-    .field input:focus,.field textarea:focus{border-color:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.12);background:#fff}
-    .req{color:#ef4444;margin-left:2px}
+    /* Question */
+    .question { margin-bottom: 24px; }
+    .question:last-child { margin-bottom: 0; }
+    .q-label { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px; }
+    .q-num { min-width: 22px; height: 22px; background: var(--blue-light); border: 1px solid #C5D3EE; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--blue-primary); flex-shrink: 0; margin-top: 1px; }
+    .q-text { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
+    .q-hint { font-size: 12.5px; color: var(--text-muted); margin-bottom: 14px; margin-left: 30px; }
+    .req { color: var(--error); margin-left: 2px; }
+
+    /* Input fields */
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    .field > label { display: block; font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+    .field input[type=text], .field input[type=email], .field textarea {
+      width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius);
+      font-size: 13.5px; color: var(--text-primary); background: #FAFBFD; outline: none; resize: vertical;
+      transition: border-color .2s, box-shadow .2s; font-family: inherit;
+    }
+    .field input:focus, .field textarea:focus { border-color: var(--blue-secondary); box-shadow: 0 0 0 3px rgba(0,87,184,.1); background: #fff; }
 
     /* Radio pills */
-    .radio-group{display:flex;flex-wrap:wrap;gap:8px}
-    .r-pill{display:flex;align-items:center;gap:7px;padding:8px 16px;border:1.5px solid #e5e7eb;border-radius:50px;cursor:pointer;font-size:13px;font-weight:500;color:#374151;background:#fafafa;transition:all .15s;user-select:none}
-    .r-pill:hover{border-color:#86efac;background:#f0fdf4}
-    .r-pill input{display:none}
-    .r-pill.selected{border-color:#22c55e;background:#f0fdf4;color:#15803d}
+    .radio-group { display: flex; flex-wrap: wrap; gap: 7px; margin-left: 30px; }
+    .r-pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); background: #FAFBFD; transition: all .15s; user-select: none; }
+    .r-pill:hover { border-color: var(--blue-secondary); background: var(--blue-light); color: var(--blue-primary); }
+    .r-pill input { display: none; }
+    .r-pill.selected { border-color: var(--blue-primary); background: var(--blue-light); color: var(--blue-primary); font-weight: 600; }
+    .r-pill.selected::before { content: '✓'; font-size: 11px; color: var(--blue-primary); }
 
     /* Checkbox grid */
-    .cb-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-    @media(max-width:500px){.cb-grid{grid-template-columns:1fr}}
-    .cb-item{display:flex;align-items:center;gap:9px;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:9px;cursor:pointer;background:#fafafa;transition:all .15s;user-select:none}
-    .cb-item:hover{border-color:#86efac;background:#f0fdf4}
-    .cb-item input{display:none}
-    .cb-box{width:17px;height:17px;border:2px solid #d1d5db;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
-    .cb-item input:checked~.cb-box{background:#22c55e;border-color:#22c55e}
-    .cb-item input:checked~.cb-box::after{content:'';width:4px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);display:block}
-    .cb-item .cb-lbl{font-size:13px;color:#374151;font-weight:500}
-    .cb-item.selected{border-color:#22c55e;background:#f0fdf4}
+    .cb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-left: 30px; }
+    @media(max-width:520px){ .cb-grid{ grid-template-columns:1fr; } }
+    .cb-item { display: flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; background: #FAFBFD; transition: all .15s; user-select: none; }
+    .cb-item:hover { border-color: var(--blue-secondary); background: var(--blue-light); }
+    .cb-item input { display: none; }
+    .cb-box { width: 16px; height: 16px; border: 1.5px solid #B0BCCF; border-radius: 3px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; background: #fff; }
+    .cb-item input:checked ~ .cb-box { background: var(--blue-primary); border-color: var(--blue-primary); }
+    .cb-item input:checked ~ .cb-box::after { content:''; width:4px; height:7px; border:1.5px solid #fff; border-top:none; border-left:none; transform:rotate(45deg) translateY(-1px); display:block; }
+    .cb-lbl { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+    .cb-item.selected { border-color: var(--blue-primary); background: var(--blue-light); }
+    .cb-item.selected .cb-lbl { color: var(--blue-primary); font-weight: 600; }
 
     /* Star rating */
-    .stars-section{display:flex;flex-direction:column;gap:16px}
-    .star-row{display:flex;flex-direction:column;gap:6px}
-    .star-row-label{font-size:13px;font-weight:600;color:#374151}
-    .stars{display:flex;gap:5px}
-    .star{font-size:26px;cursor:pointer;color:#d1d5db;transition:color .15s,transform .1s;line-height:1}
-    .star:hover,.star.on{color:#f59e0b}
-    .star:hover{transform:scale(1.15)}
+    .stars-section { display: flex; flex-direction: column; gap: 12px; }
+    .star-row { display: flex; flex-direction: column; gap: 6px; padding: 12px; background: #FAFBFD; border: 1px solid var(--border); border-radius: var(--radius); }
+    .star-row-label { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .stars { display: flex; gap: 4px; }
+    .star { font-size: 24px; cursor: pointer; color: #D1D9E6; transition: color .15s, transform .1s; line-height: 1; }
+    .star:hover, .star.on { color: #F59E0B; }
+    .star:hover { transform: scale(1.12); }
 
-    /* Scale (1-5 button row) */
-    .scale-group{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    .scale-btn{width:40px;height:40px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;cursor:pointer;font-size:14px;font-weight:600;color:#374151;transition:all .15s}
-    .scale-btn:hover{border-color:#86efac;background:#f0fdf4}
-    .scale-btn.selected{border-color:#22c55e;background:#22c55e;color:#fff}
-    .scale-ends{display:flex;justify-content:space-between;font-size:11px;color:#9ca3af;margin-top:4px}
+    /* Comment block */
+    .comment-block {
+      margin-top: 12px;
+      margin-left: 30px;
+      background: #F9FAFC;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue-primary);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .comment-block label {
+      font-size: 11.5px; font-weight: 700; color: var(--blue-primary);
+      display: block; margin-bottom: 7px; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .comment-block textarea {
+      width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius);
+      font-size: 13px; color: var(--text-primary); background: #fff; resize: vertical; outline: none;
+      font-family: inherit; min-height: 68px; transition: border-color .2s, box-shadow .2s;
+    }
+    .comment-block textarea:focus { border-color: var(--blue-secondary); box-shadow: 0 0 0 3px rgba(0,87,184,.1); }
+    .comment-save-btn {
+      margin-top: 8px; padding: 6px 16px;
+      background: var(--blue-light); border: 1px solid #C5D3EE; border-radius: var(--radius);
+      font-size: 12px; font-weight: 600; color: var(--blue-primary); cursor: pointer; transition: all .15s;
+    }
+    .comment-save-btn:hover { background: #D8E4F4; border-color: var(--blue-primary); }
+    .comment-save-btn.saved { background: var(--success-bg); border-color: #A5D6A7; color: var(--success); }
+
+    /* Other input */
+    .other-input { display: none; margin-top: 8px; margin-left: 30px; }
+    .other-input input { padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; color: var(--text-primary); background: #fff; outline: none; width: 260px; font-family: inherit; transition: border-color .2s; }
+    .other-input input:focus { border-color: var(--blue-secondary); }
 
     /* Submit */
-    .submit-btn{width:100%;padding:14px;background:#22c55e;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s}
-    .submit-btn:hover{background:#16a34a}
-    .submit-btn:active{transform:scale(.99)}
-    .submit-btn:disabled{background:#86efac;cursor:not-allowed}
-    .err{background:#fee2e2;color:#b91c1c;border-radius:8px;padding:12px 16px;font-size:13px;margin-top:12px;display:none}
+    .submit-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; }
+    .submit-btn { width: 100%; padding: 13px; background: var(--blue-primary); color: #fff; border: none; border-radius: var(--radius); font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: .02em; transition: background .2s, transform .1s; }
+    .submit-btn:hover { background: var(--blue-secondary); }
+    .submit-btn:active { transform: scale(.99); }
+    .submit-btn:disabled { background: #8BAAD4; cursor: not-allowed; }
+    .submit-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 10px; }
+    .err-msg { background: var(--error-bg); color: var(--error); border: 1px solid #F5C6CB; border-radius: var(--radius); padding: 10px 14px; font-size: 13px; margin-top: 12px; display: none; }
 
     /* Success */
-    .success{display:none;text-align:center;padding:60px 40px;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.07)}
-    .success .circle{width:72px;height:72px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px}
-    .success h2{font-size:22px;font-weight:700;color:#111827;margin-bottom:10px}
-    .success p{font-size:15px;color:#6b7280}
-
-    /* Question number badge */
-    .q-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:50%;font-size:11px;font-weight:700;color:#16a34a;margin-right:8px;flex-shrink:0}
-    .q-title{display:flex;align-items:flex-start;gap:0;margin-bottom:5px}
+    .success-screen { display: none; text-align: center; padding: 64px 40px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+    .success-circle { width: 68px; height: 68px; background: var(--success-bg); border: 2px solid #A5D6A7; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; font-size: 28px; color: var(--success); font-weight: 700; }
+    .success-screen h2 { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+    .success-screen p { font-size: 14px; color: var(--text-secondary); max-width: 400px; margin: 0 auto; }
   </style>
 </head>
 <body>
@@ -95,85 +162,119 @@
 
   <!-- Header -->
   <div class="header">
-    <div class="header-logo">
-      <div class="logo-icon">SVD</div>
-      <span style="font-size:15px;font-weight:700;color:#15803d">Document Validation Dashboard</span>
+    <div class="header-top">
+      <span class="boeing-logo">UDPP</span>
+      <div class="divider-v"></div>
+      <span class="header-app">Document Validation Platform</span>
     </div>
     <h1>Dashboard Feedback Survey</h1>
-    <p>Help us improve the SVD dashboard experience. Your answers directly shape what we build next. Takes about 3 minutes.</p>
-    <div class="progress-bar-wrap">
-      <div class="progress-label">0 of 15 questions answered</div>
+    <p>Help us improve the UDPP dashboard experience. Your responses are used directly by the UX team to prioritise improvements. Estimated time: 4–5 minutes.</p>
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">0 of 15 questions answered</span>
+        <span id="progressPct">0%</span>
+      </div>
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     </div>
   </div>
 
   <form id="surveyForm">
 
-    <!-- ── SECTION 1: About You ── -->
+    <!-- ── SECTION 1: Respondent Information ── -->
     <div class="card">
-      <div class="section-label">About You</div>
-      <div class="divider"></div>
+      <div class="section-header">
+        <div class="section-icon">01</div>
+        <span class="section-title">Respondent Information</span>
+      </div>
+      <div class="card-divider"></div>
       <div class="field">
-        <label>Your Name <span class="req">*</span></label>
+        <label>Full Name <span class="req">*</span></label>
         <input type="text" id="name" placeholder="e.g. Priya Sharma" required/>
       </div>
       <div class="field">
-        <label>Your Email <span class="req">*</span></label>
-        <input type="email" id="email" placeholder="e.g. priya@company.com" required/>
+        <label>Work Email <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="e.g. priya.sharma@boeing.com" required/>
       </div>
-      <div class="field">
-        <label>Your Role</label>
-        <div class="radio-group" id="roleGroup">
+      <div class="question" style="margin-bottom:0">
+        <div class="q-label"><span class="q-text">Your Role</span></div>
+        <p class="q-hint" style="margin-left:0">Select the option that best describes your primary role.</p>
+        <div class="radio-group" style="margin-left:0" id="roleGroup">
           <label class="r-pill"><input type="radio" name="role" value="Validator"/>Validator</label>
           <label class="r-pill"><input type="radio" name="role" value="Verifier"/>Verifier</label>
           <label class="r-pill"><input type="radio" name="role" value="Team Lead"/>Team Lead</label>
           <label class="r-pill"><input type="radio" name="role" value="Admin"/>Admin</label>
+          <label class="r-pill"><input type="radio" name="role" value="Product Owner"/>Product Owner</label>
           <label class="r-pill"><input type="radio" name="role" value="Other"/>Other</label>
+        </div>
+        <div class="comment-block" style="margin-left:0;margin-top:14px">
+          <label>Additional Comments</label>
+          <textarea id="roleComment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
     </div>
 
-    <!-- ── SECTION 2: Screen & Setup ── -->
+    <!-- ── SECTION 2: Your Setup ── -->
     <div class="card">
-      <div class="section-label">Your Setup</div>
-      <div class="divider"></div>
+      <div class="section-header">
+        <div class="section-icon">02</div>
+        <span class="section-title">Your Setup</span>
+      </div>
+      <div class="card-divider"></div>
 
       <!-- Q1 -->
-      <div style="margin-bottom:24px">
-        <div class="q-title"><span class="q-num">1</span><h2>What screen resolution do you primarily use when working on SVD?</h2></div>
-        <p class="sub">This helps us design for the right screen size.</p>
+      <div class="question">
+        <div class="q-label"><span class="q-num">1</span><span class="q-text">What screen resolution do you primarily use when working on UDPP?</span></div>
+        <p class="q-hint">This helps us design and optimise the interface for the most common screen sizes in use.</p>
         <div class="radio-group" id="q1">
-          <label class="r-pill"><input type="radio" name="q1" value="1366x768"/>1366 × 768 (Laptop)</label>
+          <label class="r-pill"><input type="radio" name="q1" value="1366x768"/>1366 × 768</label>
           <label class="r-pill"><input type="radio" name="q1" value="1440x900"/>1440 × 900</label>
           <label class="r-pill"><input type="radio" name="q1" value="1920x1080"/>1920 × 1080 (Full HD)</label>
           <label class="r-pill"><input type="radio" name="q1" value="2560x1440"/>2560 × 1440</label>
-          <label class="r-pill"><input type="radio" name="q1" value="Not sure"/>Not sure</label>
+          <label class="r-pill"><input type="radio" name="q1" value="3840x2160"/>3840 × 2160 (4K)</label>
+          <label class="r-pill"><input type="radio" name="q1" value="Other"/>Other</label>
+        </div>
+        <div class="other-input" id="q1OtherInput">
+          <input type="text" id="q1OtherText" placeholder="Please specify your resolution…"/>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q1Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
 
       <!-- Q2 -->
-      <div>
-        <div class="q-title"><span class="q-num">2</span><h2>Does the dashboard currently display well on your screen?</h2></div>
-        <p class="sub">Think about font sizes, spacing, and whether you need to scroll a lot.</p>
+      <div class="question" style="margin-bottom:0">
+        <div class="q-label"><span class="q-num">2</span><span class="q-text">Does the UDPP dashboard currently display well on your screen?</span></div>
+        <p class="q-hint">Consider font sizes, spacing, and whether you have to scroll excessively.</p>
         <div class="radio-group" id="q2">
-          <label class="r-pill"><input type="radio" name="q2" value="Yes, looks great"/>Yes, looks great</label>
+          <label class="r-pill"><input type="radio" name="q2" value="Yes, looks good"/>Yes, looks good</label>
           <label class="r-pill"><input type="radio" name="q2" value="Mostly, minor issues"/>Mostly, minor issues</label>
-          <label class="r-pill"><input type="radio" name="q2" value="No, fonts are too big"/>No, fonts too big</label>
-          <label class="r-pill"><input type="radio" name="q2" value="No, too much scrolling"/>No, too much scrolling</label>
-          <label class="r-pill"><input type="radio" name="q2" value="No, layout is cramped"/>No, layout cramped</label>
+          <label class="r-pill"><input type="radio" name="q2" value="Fonts too large"/>Fonts too large</label>
+          <label class="r-pill"><input type="radio" name="q2" value="Too much scrolling"/>Too much scrolling</label>
+          <label class="r-pill"><input type="radio" name="q2" value="Layout feels cramped"/>Layout feels cramped</label>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q2Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
     </div>
 
     <!-- ── SECTION 3: Dashboard Overview ── -->
     <div class="card">
-      <div class="section-label">Dashboard Overview</div>
-      <div class="divider"></div>
+      <div class="section-header">
+        <div class="section-icon">03</div>
+        <span class="section-title">Dashboard Overview</span>
+      </div>
+      <div class="card-divider"></div>
 
       <!-- Q3 -->
-      <div style="margin-bottom:24px">
-        <div class="q-title"><span class="q-num">3</span><h2>What is the first thing you look at when you open the dashboard?</h2></div>
-        <p class="sub">Pick the one that catches your eye first.</p>
+      <div class="question">
+        <div class="q-label"><span class="q-num">3</span><span class="q-text">What is the first thing you look at when you open the dashboard?</span></div>
+        <p class="q-hint">Select the one metric or section that catches your attention first.</p>
         <div class="radio-group" id="q3">
           <label class="r-pill"><input type="radio" name="q3" value="Total Data Elements"/>Total Data Elements</label>
           <label class="r-pill"><input type="radio" name="q3" value="Total Estimated Time"/>Total Estimated Time</label>
@@ -184,42 +285,60 @@
           <label class="r-pill"><input type="radio" name="q3" value="Completed count"/>Completed Count</label>
           <label class="r-pill"><input type="radio" name="q3" value="Document table"/>Document Table</label>
         </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q3Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
+        </div>
       </div>
 
       <!-- Q4 -->
-      <div style="margin-bottom:24px">
-        <div class="q-title"><span class="q-num">4</span><h2>Should the status cards (Under Review, Data Check, etc.) act as clickable filters for the document table?</h2></div>
-        <p class="sub">e.g. clicking "Under Review" would show only those documents below.</p>
+      <div class="question">
+        <div class="q-label"><span class="q-num">4</span><span class="q-text">Should the status cards (Under Review, Data Check, etc.) act as clickable filters for the document table?</span></div>
+        <p class="q-hint">e.g. Clicking "Under Review" would filter the table to show only those documents.</p>
         <div class="radio-group" id="q4">
           <label class="r-pill"><input type="radio" name="q4" value="Yes, definitely"/>Yes, definitely</label>
-          <label class="r-pill"><input type="radio" name="q4" value="Yes, would be helpful"/>Yes, would be helpful</label>
+          <label class="r-pill"><input type="radio" name="q4" value="Yes, would help"/>Yes, would help</label>
           <label class="r-pill"><input type="radio" name="q4" value="No, not needed"/>No, not needed</label>
           <label class="r-pill"><input type="radio" name="q4" value="No preference"/>No preference</label>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q4Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
 
       <!-- Q5 -->
-      <div>
-        <div class="q-title"><span class="q-num">5</span><h2>Do you prefer seeing only your own assigned files, or the full team dashboard?</h2></div>
-        <p class="sub">Should the dashboard be personalised to your work?</p>
+      <div class="question" style="margin-bottom:0">
+        <div class="q-label"><span class="q-num">5</span><span class="q-text">Do you prefer seeing only your own assigned files, or the full team dashboard?</span></div>
+        <p class="q-hint">Should the dashboard be personalised to your individual workload?</p>
         <div class="radio-group" id="q5">
           <label class="r-pill"><input type="radio" name="q5" value="My files only"/>My files only</label>
           <label class="r-pill"><input type="radio" name="q5" value="Full team view"/>Full team view</label>
-          <label class="r-pill"><input type="radio" name="q5" value="Both — let me toggle"/>Both — let me toggle</label>
+          <label class="r-pill"><input type="radio" name="q5" value="Both — switchable toggle"/>Both — switchable toggle</label>
           <label class="r-pill"><input type="radio" name="q5" value="No preference"/>No preference</label>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q5Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
     </div>
 
     <!-- ── SECTION 4: Document Table ── -->
     <div class="card">
-      <div class="section-label">Document Table</div>
-      <div class="divider"></div>
+      <div class="section-header">
+        <div class="section-icon">04</div>
+        <span class="section-title">Document Table</span>
+      </div>
+      <div class="card-divider"></div>
 
       <!-- Q6 -->
-      <div style="margin-bottom:24px">
-        <div class="q-title"><span class="q-num">6</span><h2>Which sections of the dashboard do you find most useful?</h2></div>
-        <p class="sub">Select all that apply.</p>
+      <div class="question">
+        <div class="q-label"><span class="q-num">6</span><span class="q-text">Which sections of the dashboard do you find most useful?</span></div>
+        <p class="q-hint">Select all that apply.</p>
         <div class="cb-grid" id="q6">
           <label class="cb-item"><input type="checkbox" value="Summary Metrics Cards"/><span class="cb-box"></span><span class="cb-lbl">📊 Summary Metrics Cards</span></label>
           <label class="cb-item"><input type="checkbox" value="Progress Donut Chart"/><span class="cb-box"></span><span class="cb-lbl">🍩 Progress Donut Chart</span></label>
@@ -230,12 +349,17 @@
           <label class="cb-item"><input type="checkbox" value="Document Table"/><span class="cb-box"></span><span class="cb-lbl">📋 Document Table</span></label>
           <label class="cb-item"><input type="checkbox" value="File Type Filter"/><span class="cb-box"></span><span class="cb-lbl">🗂️ File Type Filter</span></label>
         </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q6Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
+        </div>
       </div>
 
       <!-- Q7 -->
-      <div style="margin-bottom:24px">
-        <div class="q-title"><span class="q-num">7</span><h2>Which columns in the document table do you use most?</h2></div>
-        <p class="sub">Select all that apply.</p>
+      <div class="question">
+        <div class="q-label"><span class="q-num">7</span><span class="q-text">Which columns in the document table do you use most?</span></div>
+        <p class="q-hint">Select all that apply.</p>
         <div class="cb-grid" id="q7">
           <label class="cb-item"><input type="checkbox" value="Source (file name)"/><span class="cb-box"></span><span class="cb-lbl">📄 Source (file name)</span></label>
           <label class="cb-item"><input type="checkbox" value="Status"/><span class="cb-box"></span><span class="cb-lbl">🏷️ Status</span></label>
@@ -246,156 +370,220 @@
           <label class="cb-item"><input type="checkbox" value="Data Elements count"/><span class="cb-box"></span><span class="cb-lbl">🔢 Data Elements</span></label>
           <label class="cb-item"><input type="checkbox" value="Actions (view/edit)"/><span class="cb-box"></span><span class="cb-lbl">⚙️ Actions</span></label>
         </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q7Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
+        </div>
       </div>
 
       <!-- Q8 -->
-      <div>
-        <div class="q-title"><span class="q-num">8</span><h2>Is the "Estimated Time to Complete" column useful to you?</h2></div>
-        <p class="sub">This shows the system's estimate of how long a document will take to verify.</p>
+      <div class="question" style="margin-bottom:0">
+        <div class="q-label"><span class="q-num">8</span><span class="q-text">Is the "Estimated Time to Complete" column useful to you?</span></div>
+        <p class="q-hint">This shows the system's estimate of how long a document will take to verify.</p>
         <div class="radio-group" id="q8">
           <label class="r-pill"><input type="radio" name="q8" value="Yes, I use it regularly"/>Yes, I use it regularly</label>
           <label class="r-pill"><input type="radio" name="q8" value="Sometimes useful"/>Sometimes useful</label>
           <label class="r-pill"><input type="radio" name="q8" value="No, I ignore it"/>No, I ignore it</label>
           <label class="r-pill"><input type="radio" name="q8" value="It is inaccurate"/>It's inaccurate</label>
         </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q8Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
+        </div>
       </div>
     </div>
 
     <!-- ── SECTION 5: Upload & Workflow ── -->
     <div class="card">
-      <div class="section-label">Upload &amp; Workflow</div>
-      <div class="divider"></div>
+      <div class="section-header">
+        <div class="section-icon">05</div>
+        <span class="section-title">Upload &amp; Workflow</span>
+      </div>
+      <div class="card-divider"></div>
 
       <!-- Q9 -->
-      <div style="margin-bottom:24px">
-        <div class="q-title"><span class="q-num">9</span><h2>How would you like to be notified when document extraction is complete?</h2></div>
-        <p class="sub">After you upload a file, extraction takes some time in the background.</p>
+      <div class="question">
+        <div class="q-label"><span class="q-num">9</span><span class="q-text">How would you like to be notified when document extraction is complete?</span></div>
+        <p class="q-hint">After upload, extraction runs in the background and can take several minutes.</p>
         <div class="radio-group" id="q9">
-          <label class="r-pill"><input type="radio" name="q9" value="Toast notification (non-blocking)"/>Toast notification</label>
+          <label class="r-pill"><input type="radio" name="q9" value="Toast notification"/>Toast notification (non-blocking)</label>
           <label class="r-pill"><input type="radio" name="q9" value="Progress bar in corner"/>Progress bar in corner</label>
           <label class="r-pill"><input type="radio" name="q9" value="Email notification"/>Email notification</label>
-          <label class="r-pill"><input type="radio" name="q9" value="Just update the table status"/>Just update table status</label>
+          <label class="r-pill"><input type="radio" name="q9" value="Update table status only"/>Update table status only</label>
           <label class="r-pill"><input type="radio" name="q9" value="No notification needed"/>No notification needed</label>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q9Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
 
       <!-- Q10 -->
-      <div style="margin-bottom:24px">
-        <div class="q-title"><span class="q-num">10</span><h2>When an amendment with multiple airports is uploaded, how should it be displayed in the dashboard?</h2></div>
-        <p class="sub">An amendment folder can contain 20–30+ files for different airports.</p>
+      <div class="question">
+        <div class="q-label"><span class="q-num">10</span><span class="q-text">When an amendment with multiple airports is uploaded, how should it be displayed in the dashboard?</span></div>
+        <p class="q-hint">An amendment folder can contain 20–30+ files for different airports.</p>
         <div class="radio-group" id="q10">
-          <label class="r-pill"><input type="radio" name="q10" value="Show as one folder row, expandable"/>One folder row (expandable)</label>
-          <label class="r-pill"><input type="radio" name="q10" value="Show each file as separate row"/>Each file as a separate row</label>
-          <label class="r-pill"><input type="radio" name="q10" value="Show folder, then navigate inside"/>Folder level, then drill in</label>
+          <label class="r-pill"><input type="radio" name="q10" value="One folder row, expandable"/>One folder row (expandable)</label>
+          <label class="r-pill"><input type="radio" name="q10" value="Each file as separate row"/>Each file as a separate row</label>
+          <label class="r-pill"><input type="radio" name="q10" value="Folder level then drill in"/>Folder level, then drill in</label>
           <label class="r-pill"><input type="radio" name="q10" value="No preference"/>No preference</label>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q10Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
 
       <!-- Q11 -->
-      <div>
-        <div class="q-title"><span class="q-num">11</span><h2>When reviewing a document, would you like to switch between airports without leaving the review screen?</h2></div>
-        <p class="sub">e.g. a side panel listing all airports in the amendment, clickable from the review page.</p>
+      <div class="question" style="margin-bottom:0">
+        <div class="q-label"><span class="q-num">11</span><span class="q-text">When reviewing a document, would you like to switch between airports without leaving the review screen?</span></div>
+        <p class="q-hint">e.g. A side panel listing all airports in the amendment, navigable from the review page.</p>
         <div class="radio-group" id="q11">
           <label class="r-pill"><input type="radio" name="q11" value="Yes, very useful"/>Yes, very useful</label>
           <label class="r-pill"><input type="radio" name="q11" value="Prefer to go back to dashboard"/>Prefer to go back to dashboard</label>
           <label class="r-pill"><input type="radio" name="q11" value="No preference"/>No preference</label>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q11Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
     </div>
 
     <!-- ── SECTION 6: UX & Filters ── -->
     <div class="card">
-      <div class="section-label">UX &amp; Filters</div>
-      <div class="divider"></div>
+      <div class="section-header">
+        <div class="section-icon">06</div>
+        <span class="section-title">UX &amp; Filters</span>
+      </div>
+      <div class="card-divider"></div>
 
       <!-- Q12 -->
-      <div style="margin-bottom:24px">
-        <div class="q-title"><span class="q-num">12</span><h2>Is the left panel (showing section/document details) useful when you are reviewing a document?</h2></div>
-        <p class="sub">The panel appears on the left side of the review screen.</p>
+      <div class="question">
+        <div class="q-label"><span class="q-num">12</span><span class="q-text">Is the left panel (showing section / document details) useful when reviewing a document?</span></div>
+        <p class="q-hint">The panel appears on the left side of the review screen.</p>
         <div class="radio-group" id="q12">
           <label class="r-pill"><input type="radio" name="q12" value="Yes, I use it often"/>Yes, I use it often</label>
           <label class="r-pill"><input type="radio" name="q12" value="Sometimes"/>Sometimes</label>
           <label class="r-pill"><input type="radio" name="q12" value="No, I never use it"/>No, I never use it</label>
-          <label class="r-pill"><input type="radio" name="q12" value="I didn't know it existed"/>Didn't know it existed</label>
+          <label class="r-pill"><input type="radio" name="q12" value="Didn't know it existed"/>Didn't know it existed</label>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q12Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
 
       <!-- Q13 -->
-      <div>
-        <div class="q-title"><span class="q-num">13</span><h2>When reviewing a document for the first time (no baseline), should the status filter be hidden?</h2></div>
-        <p class="sub">First-time reviews require verifying everything — the filter has no purpose yet.</p>
+      <div class="question" style="margin-bottom:0">
+        <div class="q-label"><span class="q-num">13</span><span class="q-text">When reviewing a new document for the first time (no baseline), should the status filter be hidden?</span></div>
+        <p class="q-hint">First-time reviews require verifying everything — the filter has no meaningful purpose yet.</p>
         <div class="radio-group" id="q13">
-          <label class="r-pill"><input type="radio" name="q13" value="Yes, hide it for new docs"/>Yes, hide it for new docs</label>
-          <label class="r-pill"><input type="radio" name="q13" value="No, keep it visible"/>No, keep it visible</label>
-          <label class="r-pill"><input type="radio" name="q13" value="Disable it but keep visible"/>Disable it but keep visible</label>
+          <label class="r-pill"><input type="radio" name="q13" value="Yes, hide it"/>Yes, hide it for new documents</label>
+          <label class="r-pill"><input type="radio" name="q13" value="No, keep visible"/>No, keep it visible</label>
+          <label class="r-pill"><input type="radio" name="q13" value="Disable but keep visible"/>Disable it but keep visible</label>
           <label class="r-pill"><input type="radio" name="q13" value="No preference"/>No preference</label>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q13Comment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
     </div>
 
     <!-- ── SECTION 7: Ratings ── -->
     <div class="card">
-      <div class="section-label">Ratings</div>
-      <div class="divider"></div>
-      <div class="q-title" style="margin-bottom:5px"><span class="q-num">14</span><h2>How useful are these sections to you? Rate each 1–5.</h2></div>
-      <p class="sub" style="margin-bottom:20px">1 = Not useful at all &nbsp;·&nbsp; 5 = Extremely useful</p>
+      <div class="section-header">
+        <div class="section-icon">07</div>
+        <span class="section-title">Section Ratings</span>
+      </div>
+      <div class="card-divider"></div>
+      <div class="q-label" style="margin-bottom:4px"><span class="q-num">14</span><span class="q-text">How useful are these sections to you? Rate each from 1 to 5.</span></div>
+      <p class="q-hint">1 = Not useful at all &nbsp;·&nbsp; 5 = Extremely useful</p>
       <div class="stars-section">
         <div class="star-row">
-          <span class="star-row-label">Summary Metrics (Total Elements, Time, Progress)</span>
+          <span class="star-row-label">Summary Metrics Cards (Total Elements, Estimated Time, Progress)</span>
           <div class="stars" data-idx="0"><span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span></div>
         </div>
         <div class="star-row">
-          <span class="star-row-label">Status Cards (Under Review, Data Check, Verification, Completed)</span>
+          <span class="star-row-label">Status Cards (Under Review, Data Check Required, Verification Required, Completed)</span>
           <div class="stars" data-idx="1"><span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span></div>
         </div>
         <div class="star-row">
-          <span class="star-row-label">Document Table (file list, columns, filters)</span>
+          <span class="star-row-label">Document Table (file list, status column, filters, pagination)</span>
           <div class="stars" data-idx="2"><span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span></div>
         </div>
         <div class="star-row">
-          <span class="star-row-label">Overall dashboard layout and usability</span>
+          <span class="star-row-label">Overall dashboard — layout, clarity, and ease of use</span>
           <div class="stars" data-idx="3"><span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span></div>
         </div>
+      </div>
+      <div class="comment-block" style="margin-left:0;margin-top:14px">
+        <label>Additional Comments on Ratings</label>
+        <textarea id="q14Comment" placeholder="Add any additional comments or details here…"></textarea>
+        <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
       </div>
     </div>
 
     <!-- ── SECTION 8: Open Feedback ── -->
     <div class="card">
-      <div class="section-label">Open Feedback</div>
-      <div class="divider"></div>
+      <div class="section-header">
+        <div class="section-icon">08</div>
+        <span class="section-title">Open Feedback</span>
+      </div>
+      <div class="card-divider"></div>
 
-      <!-- Q15a -->
-      <div style="margin-bottom:20px">
-        <div class="q-title"><span class="q-num">15</span><h2>What is the most confusing or frustrating part of the current dashboard?</h2></div>
-        <p class="sub">Be as specific as you like.</p>
+      <div class="question">
+        <div class="q-label"><span class="q-num">15</span><span class="q-text">What is the most confusing or frustrating part of the current dashboard?</span></div>
+        <p class="q-hint">Be as specific as you like — your detailed feedback is most helpful to the UX team.</p>
         <div class="field" style="margin-bottom:0">
-          <textarea id="q15a" rows="3" placeholder="e.g. The header takes up too much space, hard to see the file list..."></textarea>
+          <textarea id="q15a" rows="3" placeholder="e.g. The header takes up too much space, hard to see the file list without scrolling…"></textarea>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q15aComment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
 
-      <!-- Q15b -->
-      <div>
-        <div class="q-title"><span class="q-num" style="background:#fef9c3;border-color:#fde047;color:#a16207">+</span><h2>Is there any data or feature missing from the dashboard?</h2></div>
-        <p class="sub">What would make SVD more useful for your day-to-day work?</p>
+      <div class="question" style="margin-bottom:0">
+        <div class="q-label">
+          <span class="q-num" style="background:#FFF3E0;border-color:#FFCC80;color:var(--warning)">+</span>
+          <span class="q-text">Is there any data or feature you feel is missing from the dashboard?</span>
+        </div>
+        <p class="q-hint">What would make UDPP more useful for your day-to-day work?</p>
         <div class="field" style="margin-bottom:0">
-          <textarea id="q15b" rows="3" placeholder="e.g. I'd like to filter by airport, see who else is working on the same amendment..."></textarea>
+          <textarea id="q15b" rows="3" placeholder="e.g. I'd like to filter by airport, or see who else is working on the same amendment…"></textarea>
+        </div>
+        <div class="comment-block">
+          <label>Additional Comments</label>
+          <textarea id="q15bComment" placeholder="Add any additional comments or details here…"></textarea>
+          <button type="button" class="comment-save-btn" onclick="saveComment(this)">Submit Comment</button>
         </div>
       </div>
     </div>
 
     <!-- Submit -->
-    <div class="card" style="padding:24px 32px">
-      <button type="submit" class="submit-btn" id="submitBtn">Submit Feedback →</button>
-      <div class="err" id="errMsg">Something went wrong. Please try again.</div>
+    <div class="submit-card">
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Feedback</button>
+      <p class="submit-note">Your response is used only to improve the UDPP platform and will be reviewed by the UX team.</p>
+      <div class="err-msg" id="errMsg">Something went wrong. Please try again or contact your system administrator.</div>
     </div>
 
   </form>
 
   <!-- Success -->
-  <div class="success" id="successScreen">
-    <div class="circle">✅</div>
-    <h2>Thank you for your feedback!</h2>
-    <p>Your response has been recorded and will directly help shape the next version of the SVD dashboard.</p>
+  <div class="success-screen" id="successScreen">
+    <div class="success-circle">✓</div>
+    <h2>Feedback Submitted</h2>
+    <p>Thank you. Your response has been recorded and will be reviewed by the UDPP UX team to prioritise upcoming improvements.</p>
   </div>
 
 </div>
@@ -404,7 +592,22 @@
   const SUPABASE_URL = 'https://jpawzlpmrshxtpecfrmn.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_bBpoImrHw1qOfX69O8cWJA_ZDoVSB05';
 
-  // ── Star ratings ──────────────────────────────────────────────
+  // "Other" resolution input
+  document.querySelectorAll('#q1 input[type=radio]').forEach(r=>{
+    r.addEventListener('change',()=>{
+      document.getElementById('q1OtherInput').style.display = r.value==='Other'?'block':'none';
+      updateProgress();
+    });
+  });
+
+  // Save Note button
+  function saveComment(btn){
+    btn.textContent = '✓ Comment Saved';
+    btn.classList.add('saved');
+    setTimeout(()=>{ btn.textContent='Submit Comment'; btn.classList.remove('saved'); }, 2500);
+  }
+
+  // Star ratings
   const ratings = [0,0,0,0];
   document.querySelectorAll('.stars').forEach(group=>{
     const idx = parseInt(group.dataset.idx);
@@ -412,20 +615,15 @@
     stars.forEach(s=>{
       s.addEventListener('click',()=>{
         ratings[idx]=parseInt(s.dataset.v);
-        stars.forEach(x=>x.classList.toggle('on',parseInt(x.dataset.v)<=ratings[idx]));
+        stars.forEach(x=>x.classList.toggle('on', parseInt(x.dataset.v)<=ratings[idx]));
         updateProgress();
       });
-      s.addEventListener('mouseover',()=>{
-        const v=parseInt(s.dataset.v);
-        stars.forEach(x=>x.style.color=parseInt(x.dataset.v)<=v?'#f59e0b':'#d1d5db');
-      });
-      s.addEventListener('mouseout',()=>{
-        stars.forEach(x=>x.style.color=parseInt(x.dataset.v)<=ratings[idx]?'#f59e0b':'#d1d5db');
-      });
+      s.addEventListener('mouseover',()=>{ const v=parseInt(s.dataset.v); stars.forEach(x=>x.style.color=parseInt(x.dataset.v)<=v?'#F59E0B':'#D1D9E6'); });
+      s.addEventListener('mouseout',()=>{ stars.forEach(x=>x.style.color=parseInt(x.dataset.v)<=ratings[idx]?'#F59E0B':'#D1D9E6'); });
     });
   });
 
-  // ── Radio pill highlight ──────────────────────────────────────
+  // Radio pill highlight
   document.querySelectorAll('.r-pill').forEach(pill=>{
     pill.querySelector('input').addEventListener('change',()=>{
       const name=pill.querySelector('input').name;
@@ -435,106 +633,122 @@
     });
   });
 
-  // ── Checkbox highlight ────────────────────────────────────────
+  // Checkbox highlight
   document.querySelectorAll('.cb-item').forEach(item=>{
     item.querySelector('input').addEventListener('change',e=>{
-      item.classList.toggle('selected',e.target.checked);
+      item.classList.toggle('selected', e.target.checked);
       updateProgress();
     });
   });
 
-  // ── Progress bar ──────────────────────────────────────────────
+  // Progress tracker
   function updateProgress(){
     let answered=0;
-    // radios: q1-q5, q8-q13 = 11 radio groups
-    ['q1','q2','q3','q4','q5','q8','q9','q10','q11','q12','q13'].forEach(n=>{
-      if(document.querySelector(`input[name="${n}"]:checked`)) answered++;
-    });
-    // checkboxes: q6, q7 = 2 groups
+    ['q1','q2','q3','q4','q5','q8','q9','q10','q11','q12','q13'].forEach(n=>{ if(document.querySelector(`input[name="${n}"]:checked`)) answered++; });
     if(document.querySelector('#q6 input:checked')) answered++;
     if(document.querySelector('#q7 input:checked')) answered++;
-    // stars = 1 group (all 4 rated)
     if(ratings.some(r=>r>0)) answered++;
-    // text: q15a, q15b = 1 group
     if(document.getElementById('q15a').value.trim()||document.getElementById('q15b').value.trim()) answered++;
-    const total=15;
-    const pct=Math.round((answered/total)*100);
+    const total=15, pct=Math.round((answered/total)*100);
     document.getElementById('progressFill').style.width=pct+'%';
-    document.querySelector('.progress-label').textContent=`${answered} of ${total} questions answered`;
+    document.getElementById('progressLabel').textContent=`${answered} of ${total} questions answered`;
+    document.getElementById('progressPct').textContent=pct+'%';
   }
-  document.querySelectorAll('textarea').forEach(t=>t.addEventListener('input',updateProgress));
+  document.querySelectorAll('textarea, input[type=text]').forEach(t=>t.addEventListener('input', updateProgress));
 
-  // ── Form submit ───────────────────────────────────────────────
-  document.getElementById('surveyForm').addEventListener('submit',async e=>{
+  // Helper
+  const getR  = n=>{ const el=document.querySelector(`input[name="${n}"]:checked`); return el?el.value:''; };
+  const getC  = id=>{ const el=document.getElementById(id); return (el&&el.value.trim())?el.value.trim():''; };
+
+  // Form submit
+  document.getElementById('surveyForm').addEventListener('submit', async e=>{
     e.preventDefault();
-    const name=document.getElementById('name').value.trim();
-    const email=document.getElementById('email').value.trim();
+    const name  = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
 
-    // Collect all answers into useful_sections array
-    const answers=[];
-    const getR=n=>{const el=document.querySelector(`input[name="${n}"]:checked`);return el?el.value:'';};
-
+    const answers = [];
     answers.push('role: '+(getR('role')||'Not specified'));
-    answers.push('Q1_resolution: '+(getR('q1')||'Not answered'));
+    if(getC('roleComment')) answers.push('role_comment: '+getC('roleComment'));
+
+    let q1val = getR('q1');
+    if(q1val==='Other') q1val='Other: '+(document.getElementById('q1OtherText').value.trim()||'not specified');
+    answers.push('Q1_resolution: '+(q1val||'Not answered'));
+    if(getC('q1Comment')) answers.push('Q1_comment: '+getC('q1Comment'));
+
     answers.push('Q2_display: '+(getR('q2')||'Not answered'));
+    if(getC('q2Comment')) answers.push('Q2_comment: '+getC('q2Comment'));
+
     answers.push('Q3_first_look: '+(getR('q3')||'Not answered'));
+    if(getC('q3Comment')) answers.push('Q3_comment: '+getC('q3Comment'));
+
     answers.push('Q4_status_filter: '+(getR('q4')||'Not answered'));
+    if(getC('q4Comment')) answers.push('Q4_comment: '+getC('q4Comment'));
+
     answers.push('Q5_dashboard_view: '+(getR('q5')||'Not answered'));
+    if(getC('q5Comment')) answers.push('Q5_comment: '+getC('q5Comment'));
 
     const q6=[...document.querySelectorAll('#q6 input:checked')].map(i=>i.value);
-    answers.push('Q6_useful_sections: '+( q6.length?q6.join(', '):'None selected'));
+    answers.push('Q6_useful_sections: '+(q6.length?q6.join(', '):'None selected'));
+    if(getC('q6Comment')) answers.push('Q6_comment: '+getC('q6Comment'));
 
     const q7=[...document.querySelectorAll('#q7 input:checked')].map(i=>i.value);
     answers.push('Q7_table_columns: '+(q7.length?q7.join(', '):'None selected'));
+    if(getC('q7Comment')) answers.push('Q7_comment: '+getC('q7Comment'));
 
     answers.push('Q8_est_time: '+(getR('q8')||'Not answered'));
+    if(getC('q8Comment')) answers.push('Q8_comment: '+getC('q8Comment'));
+
     answers.push('Q9_notification: '+(getR('q9')||'Not answered'));
+    if(getC('q9Comment')) answers.push('Q9_comment: '+getC('q9Comment'));
+
     answers.push('Q10_amendment_display: '+(getR('q10')||'Not answered'));
+    if(getC('q10Comment')) answers.push('Q10_comment: '+getC('q10Comment'));
+
     answers.push('Q11_airport_switch: '+(getR('q11')||'Not answered'));
+    if(getC('q11Comment')) answers.push('Q11_comment: '+getC('q11Comment'));
+
     answers.push('Q12_left_panel: '+(getR('q12')||'Not answered'));
+    if(getC('q12Comment')) answers.push('Q12_comment: '+getC('q12Comment'));
+
     answers.push('Q13_filter_hide: '+(getR('q13')||'Not answered'));
+    if(getC('q13Comment')) answers.push('Q13_comment: '+getC('q13Comment'));
+
+    answers.push('Q14_ratings: summary='+ratings[0]+', status_cards='+ratings[1]+', doc_table='+ratings[2]+', overall='+ratings[3]);
+    if(getC('q14Comment')) answers.push('Q14_comment: '+getC('q14Comment'));
 
     const q15a=document.getElementById('q15a').value.trim();
     const q15b=document.getElementById('q15b').value.trim();
-    const combinedFeedback=(q15a?'Frustrations: '+q15a:'')+(q15a&&q15b?'\n\n':'')+(q15b?'Missing features: '+q15b:'');
+    const allFeedback=[
+      q15a?'Frustrations: '+q15a:'',
+      getC('q15aComment')?'Q15a_comment: '+getC('q15aComment'):'',
+      q15b?'Missing features: '+q15b:'',
+      getC('q15bComment')?'Q15b_comment: '+getC('q15bComment'):''
+    ].filter(Boolean).join('\n\n');
 
     const btn=document.getElementById('submitBtn');
     const errMsg=document.getElementById('errMsg');
-    btn.disabled=true;btn.textContent='Submitting…';errMsg.style.display='none';
+    btn.disabled=true; btn.textContent='Submitting…'; errMsg.style.display='none';
 
     try{
       const res=await fetch(`${SUPABASE_URL}/rest/v1/survey_responses`,{
         method:'POST',
-        headers:{
-          'Content-Type':'application/json',
-          'apikey':SUPABASE_KEY,
-          'Authorization':'Bearer '+SUPABASE_KEY,
-          'Prefer':'return=minimal'
-        },
-        body:JSON.stringify({
-          name:name||'Anonymous',
-          email:email||'not-provided@survey.com',
-          useful_sections:answers,
-          ratings:ratings,
-          feedback:combinedFeedback||null
-        })
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Prefer':'return=minimal'},
+        body:JSON.stringify({ name:name||'Anonymous', email:email||'not-provided@survey.com', useful_sections:answers, ratings:ratings, feedback:allFeedback||null })
       });
       if(res.ok||res.status===201){
         document.getElementById('surveyForm').style.display='none';
         document.querySelector('.header').style.display='none';
         document.getElementById('successScreen').style.display='block';
+        window.scrollTo({top:0,behavior:'smooth'});
       } else {
-        const t=await res.text();
-        console.error(res.status,t);
+        const t=await res.text(); console.error(res.status,t);
         errMsg.textContent=`Submission failed (${res.status}). Please try again.`;
-        errMsg.style.display='block';
-        btn.disabled=false;btn.textContent='Submit Feedback →';
+        errMsg.style.display='block'; btn.disabled=false; btn.textContent='Submit Feedback';
       }
-    }catch(err){
+    } catch(err){
       console.error(err);
-      errMsg.textContent='Network error. Please check your connection.';
-      errMsg.style.display='block';
-      btn.disabled=false;btn.textContent='Submit Feedback →';
+      errMsg.textContent='Network error. Please check your connection and try again.';
+      errMsg.style.display='block'; btn.disabled=false; btn.textContent='Submit Feedback';
     }
   });
 </script>
